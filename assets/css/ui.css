@@ -1,0 +1,270 @@
+/* inter-regular - latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  src: local(''),
+       url('../fonts/inter-v8-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/inter-v8-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* inter-500 - latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  src: local(''),
+       url('../fonts/inter-v8-latin-500.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/inter-v8-latin-500.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* inter-600 - latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  src: local(''),
+       url('../fonts/inter-v8-latin-600.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/inter-v8-latin-600.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* inter-700 - latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  src: local(''),
+       url('../fonts/inter-v8-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/inter-v8-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+@font-face {
+    font-family: 'Cascadia Code Web';
+    src: url('../fonts/cascadia-code-semilight.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal
+}
+
+:root {
+    --ui-code-font-stack: "Cascadia Code Web", "Cascadia Code", ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+
+
+/**
+ * Ad Box UI
+ */
+.gb-ad {
+    color: #1d2327;
+    background-color: #ffffff;
+    box-shadow: 0 0 2px 1px rgb(53 72 91 / 14%),
+        0 6px 3px rgb(0 0 0 / 4%),
+        0 12px 6px rgb(0 0 0 / 3%);
+    margin: 16px 0;
+    padding: 24px;
+}
+.gb-ad a {
+    color: #0057ff;
+    text-decoration: underline;
+    text-decoration-color: lightgray;
+    text-decoration-thickness: 2px;
+}
+.gb-ad a:hover {
+    text-decoration-color: #0057ff;
+}
+.gb-ad svg {
+    height: 24px;
+    margin-right: 8px;
+    vertical-align: text-bottom;
+}
+.gb-ad h3 {
+    color: #1d2327;
+    font-size: 1.45em;
+    font-weight: 500;
+}
+.gb-ad b {
+    font-weight: 500;
+}
+.gb-ad p {
+    font-size: 15px;
+}
+
+
+
+/* https://flatuicolors.com/palette/se */
+.wrap--w3p h2,
+.wrap--w3p h3,
+.wrap--w3p h4,
+.wrap--w3p .button,
+.wrap--w3p .w3p-intro,
+.wrap--w3p h2.nav-tab-wrapper a,
+.wrap--w3p h3.nav-tab-wrapper a,
+.wrap--w3p details .summary-title {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    font-variant-ligatures: contextual common-ligatures;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+
+    letter-spacing: -0.018em;
+}
+
+.wrap--w3p code {
+    font-family: var(--ui-code-font-stack);
+    font-weight: inherit;
+    background: #485460;
+    font-size: inherit;
+    color: #ffffff;
+    border-radius: 3px;
+}
+
+.wrap--w3p .w3p-intro {
+    font-size: 52px;
+    margin: 24px 0 48px 0;
+}
+.wrap--w3p .w3p-intro b {
+    font-weight: 700;
+}
+.wrap--w3p .w3p-intro .w3p-intro--version {
+    font-family: var(--ui-code-font-stack);
+    font-size: 14px;
+}
+
+.wrap--w3p h2.nav-tab-wrapper,
+.wrap--w3p h3.nav-tab-wrapper {
+    border-bottom: 0 none;
+}
+
+.wrap--w3p h2.nav-tab-wrapper .nav-tab {
+    border: 0 none;
+    border-radius: 0;
+    margin: 2px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.71428571;
+    font-weight: 500;
+    background: #d2dae2;
+    color: #485460;
+}
+
+.wrap--w3p h3.nav-tab-wrapper .nav-tab {
+    border: 0 none;
+    border-radius: 0;
+    margin: 2px;
+    padding: 6px 14px;
+    font-size: 13px;
+    line-height: 1.71428571;
+    font-weight: 500;
+    background: #d2dae2;
+    color: #485460;
+}
+
+.wrap--w3p h2.nav-tab-wrapper .nav-tab-active,
+.wrap--w3p h2.nav-tab-wrapper .nav-tab-active:focus,
+.wrap--w3p h2.nav-tab-wrapper .nav-tab-active:focus:active,
+.wrap--w3p h2.nav-tab-wrapper .nav-tab-active:hover {
+    border-left: 3px solid #1e272e;
+    background: #ffffff;
+    color: #1e272e;
+}
+.wrap--w3p h3.nav-tab-wrapper .nav-tab-active,
+.wrap--w3p h3.nav-tab-wrapper .nav-tab-active:focus,
+.wrap--w3p h3.nav-tab-wrapper .nav-tab-active:focus:active,
+.wrap--w3p h3.nav-tab-wrapper .nav-tab-active:hover {
+    border-left: 3px solid #1e272e;
+    background: #ffffff;
+    color: #1e272e;
+}
+
+.wrap--w3p h2.nav-tab-wrapper .nav-tab:focus,
+.wrap--w3p h2.nav-tab-wrapper .nav-tab:hover {
+    color: #1e272e;
+}
+.wrap--w3p h3.nav-tab-wrapper .nav-tab:focus,
+.wrap--w3p h3.nav-tab-wrapper .nav-tab:hover {
+    color: #1e272e;
+}
+
+
+
+.wrap--w3p details {
+    font-size: 1rem;
+    margin: 0 0 16px 0;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    width: 100%;
+    background: #ffffff;
+    position: relative;
+}
+
+.wrap--w3p details .summary-title {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.wrap--w3p details:hover {
+    cursor: pointer;
+}
+
+.wrap--w3p details .summary-content {
+    border-top: 1px solid #e2e8f0;
+    cursor: default;
+    padding: 1em;
+    line-height: 1.5;
+}
+
+.wrap--w3p details summary {
+    list-style: none;
+    padding: 1em;
+}
+
+.wrap--w3p details summary:focus {
+    outline: none;
+}
+
+.wrap--w3p details summary:hover .summary-chevron-up svg {
+    opacity: 1;
+}
+
+.wrap--w3p details .summary-chevron-up svg {
+    opacity: 0.5;
+}
+
+.wrap--w3p details .summary-chevron-up,
+.wrap--w3p details .summary-chevron-down {
+    pointer-events: none;
+    position: absolute;
+    top: 0.75em;
+    right: 1em;
+    background: #ffffff;
+}
+
+.wrap--w3p details .summary-chevron-up svg,
+.wrap--w3p details .summary-chevron-down svg {
+    display: block;
+}
+
+.wrap--w3p details summary::-webkit-details-marker {
+    display: none;
+}
+
+
+
+.meter-container {
+    background: #ecf0f1;
+    border-radius: 48px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.25);
+}
+
+meter#w3p-meter--title,
+meter#w3p-meter--excerpt {
+    appearance: none;
+    display: block;
+    width: 100%;
+    height: 8px;
+    border-radius: 48px;
+    transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.jtable table {
+    table-layout: auto;
+}
