@@ -111,7 +111,15 @@ function w3p_search_console_footer() {
         $out .= '<script type="application/ld+json">' . wp_json_encode( $local_business_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>';
     }
 
-    echo $out;
+    $allowed_html = [
+        'script' => [
+            'type' => [], // Allow script tags with any type attribute
+        ],
+        '!--'    => [], // Allow comments
+    ];
+
+    // Use wp_kses() to escape $out
+    echo wp_kses( $out, $allowed_html );
 }
 
 
@@ -334,7 +342,7 @@ function w3p_breadcrumbs() {
 
             // Check if the post is in a category
             if ( ! empty( $last_category ) ) {
-                echo $cat_display;
+                echo wp_kses_data( $cat_display );
                 echo wp_kses_data( w3p_breadcrumb_wrapper( get_the_title(), '#', 'item-current item-' . $post->ID . '', $counter ) );
                 ++$counter;
 
@@ -373,7 +381,7 @@ function w3p_breadcrumbs() {
                 }
 
                 // Display parent pages
-                echo $parents;
+                echo wp_kses_data( $parents );
 
                 // Current page
                 echo wp_kses_data( w3p_breadcrumb_wrapper( get_the_title(), '#', 'item-current item-' . $post->ID . '', $counter ) );
