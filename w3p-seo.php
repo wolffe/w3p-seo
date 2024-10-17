@@ -50,7 +50,7 @@ require 'modules/w3p-image.php';
 add_action( 'admin_menu', 'w3p_settings_menu' );
 
 function w3p_settings_menu() {
-    add_menu_page( __( 'W3P SEO', 'wp-perfect-plugin' ), __( 'W3P SEO', 'wp-perfect-plugin' ), 'manage_options', 'w3p', 'w3p_settings', plugins_url( '/assets/images/w3p-logo-mini.svg', __FILE__ ), 88 );
+    add_menu_page( __( 'W3P SEO', 'w3p-seo' ), __( 'W3P SEO', 'w3p-seo' ), 'manage_options', 'w3p', 'w3p_settings', plugins_url( '/assets/images/w3p-logo-mini.svg', __FILE__ ), 88 );
 }
 
 
@@ -59,6 +59,7 @@ register_activation_hook( __FILE__, 'w3p_on_activation' );
 function w3p_on_activation() {
     delete_option( 'w3p_sitemap_types' );
     delete_option( 'wot-verification' );
+    delete_option( 'w3p_topic_clustering' );
 }
 
 function w3p_admin_enqueue_scripts() {
