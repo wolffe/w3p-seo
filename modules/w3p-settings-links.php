@@ -11,12 +11,15 @@ if ( isset( $_POST['save_links_settings'] ) ) {
     $value = [];
 
     if ( isset( $_POST['w3p_link_repeater'] ) && is_array( $_POST['w3p_link_repeater'] ) ) {
-        // Sanitize the entire array
+        // Unslash the entire array first
+        $unslashed_repeater = wp_unslash( $_POST['w3p_link_repeater'] );
+
+        // Then sanitize the unslashed array
         $sanitized_repeater = array_map(
             function ( $item ) {
                 return array_map( 'sanitize_text_field', $item );
             },
-            $_POST['w3p_link_repeater']
+            $unslashed_repeater
         );
 
         $value = [];
