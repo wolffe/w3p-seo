@@ -11,11 +11,20 @@ if ( isset( $_POST['save_links_settings'] ) ) {
     $value = [];
 
     if ( isset( $_POST['w3p_link_repeater'] ) && is_array( $_POST['w3p_link_repeater'] ) ) {
-        foreach ( $_POST['w3p_link_repeater'] as $repeater ) {
+        // Sanitize the entire array
+        $sanitized_repeater = array_map(
+            function ( $item ) {
+                return array_map( 'sanitize_text_field', $item );
+            },
+            $_POST['w3p_link_repeater']
+        );
+
+        $value = [];
+        foreach ( $sanitized_repeater as $repeater ) {
             $value[] = [
-                'title' => sanitize_text_field( $repeater['title'] ),
-                'url'   => esc_url_raw( $repeater['url'] ),
-                'rel'   => sanitize_text_field( $repeater['rel'] ),
+                'title' => isset( $repeater['title'] ) ? $repeater['title'] : '',
+                'url'   => isset( $repeater['url'] ) ? esc_url_raw( $repeater['url'] ) : '',
+                'rel'   => isset( $repeater['rel'] ) ? $repeater['rel'] : '',
             ];
         }
     }
