@@ -1,1 +1,1 @@
-# w3p-seo
+# W3P SEO
