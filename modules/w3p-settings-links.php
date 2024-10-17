@@ -11,26 +11,16 @@ if ( isset( $_POST['save_links_settings'] ) ) {
     $value = [];
 
     if ( isset( $_POST['w3p_link_repeater'] ) && is_array( $_POST['w3p_link_repeater'] ) ) {
-        // Unslash the array
-        $link_repeater = wp_unslash( $_POST['w3p_link_repeater'] );
-
-        // Sanitize the entire array using array_map
-        $sanitized_repeater = array_map(
+        $value = array_map(
             function ( $repeater ) {
                 return [
-                    'title' => sanitize_text_field( $repeater['title'] ),
-                    'url'   => esc_url_raw( $repeater['url'] ),
-                    'rel'   => sanitize_text_field( $repeater['rel'] ),
+                    'title' => sanitize_text_field( $repeater['title'] ?? '' ),
+                    'url'   => esc_url_raw( $repeater['url'] ?? '' ),
+                    'rel'   => sanitize_text_field( $repeater['rel'] ?? '' ),
                 ];
             },
-            $link_repeater
+            wp_unslash( $_POST['w3p_link_repeater'] )
         );
-
-        // Now loop through the sanitized array if needed
-        foreach ( $sanitized_repeater as $repeater ) {
-            // Perform operations with sanitized data
-            $value[] = $repeater;
-        }
     }
 
     update_option( 'w3p_link_repeater', $value );
