@@ -530,7 +530,7 @@ function w3p_settings() {
                         wp_die( esc_html__( 'Nonce verification failed. Please try again.', 'w3p-seo' ) );
                     }
 
-                    update_option( 'w3p_og', (int) ( sanitize_text_field( wp_unslash( $_POST['w3p_og'] ) ) ?? 0 ) );
+                    update_option( 'w3p_og', (int) ( sanitize_text_field( wp_unslash( $_POST['w3p_og'] ?? 0 ) ) ) );
                     update_option( 'w3p_fb_default_image', esc_url_raw( wp_unslash( $_POST['w3p_fb_default_image'] ?? '' ) ) );
 
                     delete_option( 'w3p_fb_app_id' );
@@ -578,7 +578,7 @@ function w3p_settings() {
                                         }
 
                                         if ( ! empty( $_POST['image'] ) ) {
-                                            $image_url = esc_url_raw( wp_unsplash( $_POST['image'] ) );
+                                            $image_url = esc_url_raw( wp_unslash( $_POST['image'] ) );
                                         }
 
                                         wp_enqueue_media();
@@ -678,7 +678,7 @@ function w3p_settings() {
                         wp_die( esc_html__( 'Nonce verification failed. Please try again.', 'w3p-seo' ) );
                     }
 
-                    update_option( 'w3p_sitemap_links', (int) sanitize_text_field( $_POST['w3p_sitemap_links'] ?? 2000 ) );
+                    update_option( 'w3p_sitemap_links', (int) sanitize_text_field( wp_unslash( $_POST['w3p_sitemap_links'] ?? 2000 ) ) );
 
                     if ( $post_types ) {
                         foreach ( $post_types as $type ) {
@@ -765,7 +765,7 @@ function w3p_settings() {
                         wp_die( esc_html__( 'Nonce verification failed. Please try again.', 'w3p-seo' ) );
                     }
 
-                    update_option( 'w3p_enable_sitemap_users', (int) sanitize_text_field( $_POST['w3p_enable_sitemap_users'] ?? 0 ) );
+                    update_option( 'w3p_enable_sitemap_users', (int) sanitize_text_field( wp_unslash( $_POST['w3p_enable_sitemap_users'] ?? 0 ) ) );
 
                     if ( $taxonomies ) {
                         foreach ( $taxonomies as $taxonomy ) {
