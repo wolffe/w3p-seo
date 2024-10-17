@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: W3P SEO
- * Plugin URI: https://getbutterfly.com/
+ * Plugin URI: https://getbutterfly.com/wordpress-plugins/w3p-seo/
  * Description: W3P SEO aims to provide advanced options for any web developer. W3P SEO has options for search engines, such as ownership verification, local business JSON-LD data, Open Graph, analytics, header and footer easy code insertion and optimised SEO defaults.
  * Author: Ciprian Popescu
  * Author URI: https://getbutterfly.com/
- * Version: 1.8.0
+ * Version: 1.8.1
  * Requires PHP: 7.0
  * Requires CP: 2.0
  * Text Domain: w3p-seo
@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'W3P_URL', WP_PLUGIN_URL . '/' . dirname( plugin_basename( __FILE__ ) ) );
 define( 'W3P_PATH', plugin_dir_path( __FILE__ ) );
-define( 'W3P_VERSION', '1.8.0' );
+define( 'W3P_VERSION', '1.8.1' );
 
 require 'includes/functions.php';
 require 'includes/meta.php';

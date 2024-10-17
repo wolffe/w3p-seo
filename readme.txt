@@ -5,7 +5,7 @@ Requires at least: 4.9
 Requires PHP: 7.1
 Requires CP: 2.0
 Tested up to: 6.6
-Stable tag: 1.8.0
+Stable tag: 1.8.1
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -35,6 +35,10 @@ Upload and activate the plugin.
 9. Plugin Dashboard
 
 == Changelog ==
+
+= 1.8.1 =
+* FIX: Pass all CPCS guidelines
+* UPDATE: Remove lots of obsolete features
 
 = 1.8.0 =
 * FIX: Fix Link Whisper feature to use word boundaries, excluding words already inside `<a>` tags
