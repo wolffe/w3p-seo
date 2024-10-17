@@ -7,13 +7,13 @@ if ( isset( $_POST['save_links_settings'] ) ) {
     //if ( isset( $_POST['w3p_link_repeater'] ) ) {
         $value = [];
 
-        foreach ( $_POST['w3p_link_repeater'] as $repeater ) {
-            $value[] = [
-                'title' => sanitize_text_field( $repeater['title'] ),
-                'url'   => esc_url_raw( $repeater['url'] ),
-                'rel'   => sanitize_text_field( $repeater['rel'] ),
-            ];
-        }
+    foreach ( $_POST['w3p_link_repeater'] as $repeater ) {
+        $value[] = [
+            'title' => sanitize_text_field( $repeater['title'] ),
+            'url'   => esc_url_raw( $repeater['url'] ),
+            'rel'   => sanitize_text_field( $repeater['rel'] ),
+        ];
+    }
 
         update_option( 'w3p_link_repeater', $value );
     //}
@@ -60,7 +60,7 @@ if ( isset( $_POST['save_links_settings'] ) ) {
     <hr>
 
     <p>
-        <input type="submit" name="save_links_settings" class="button button-primary" value="<?php _e( 'Save Changes', 'wp-perfect-plugin' ); ?>">
+        <input type="submit" name="save_links_settings" class="button button-primary" value="<?php _e( 'Save Changes', 'w3p-seo' ); ?>">
     </p>
 </form>
 
