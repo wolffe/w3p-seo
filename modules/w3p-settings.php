@@ -460,7 +460,7 @@ function w3p_settings() {
                                         }
 
                                         if ( ! empty( $_POST['image'] ) ) {
-                                            $image_url = esc_url_raw( wp_unsplash( $_POST['image'] ) );
+                                            $image_url = esc_url_raw( wp_unslash( $_POST['image'] ?? '' ) );
                                         }
 
                                         wp_enqueue_media();
