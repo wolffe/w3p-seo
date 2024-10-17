@@ -121,7 +121,7 @@ function w3p_settings() {
             </form>
             <?php
         } elseif ( $tab === 'console' ) {
-            $sub_tab = isset( $_GET['tab2'] ) ? (string) sanitize_text_field( $_GET['tab2'] ) : 'verification';
+            $sub_tab = isset( $_GET['tab2'] ) ? (string) sanitize_text_field( wp_unslash( $_GET['tab2'] ) ) : 'verification';
             ?>
             <h2>Search Engine Console Settings</h2>
 
@@ -203,17 +203,17 @@ function w3p_settings() {
                         wp_die( esc_html__( 'Nonce verification failed. Please try again.', 'w3p-seo' ) );
                     }
 
-                    update_option( 'w3p_local', (int) sanitize_text_field( $_POST['w3p_local'] ) );
+                    update_option( 'w3p_local', (int) sanitize_text_field( wp_unslash( $_POST['w3p_local'] ?? 0 ) ) );
 
-                    update_option( 'w3p_local_locality', sanitize_text_field( $_POST['w3p_local_locality'] ) );
-                    update_option( 'w3p_local_region', sanitize_text_field( $_POST['w3p_local_region'] ) );
-                    update_option( 'w3p_local_address', sanitize_text_field( $_POST['w3p_local_address'] ) );
-                    update_option( 'w3p_local_postal_code', sanitize_text_field( $_POST['w3p_local_postal_code'] ) );
-                    update_option( 'w3p_local_country', sanitize_text_field( $_POST['w3p_local_country'] ) );
-                    update_option( 'w3p_telephone', sanitize_text_field( $_POST['w3p_telephone'] ) );
+                    update_option( 'w3p_local_locality', sanitize_text_field( wp_unslash( $_POST['w3p_local_locality'] ?? '' ) ) );
+                    update_option( 'w3p_local_region', sanitize_text_field( wp_unslash( $_POST['w3p_local_region'] ?? '' ) ) );
+                    update_option( 'w3p_local_address', sanitize_text_field( wp_unslash( $_POST['w3p_local_address'] ?? '' ) ) );
+                    update_option( 'w3p_local_postal_code', sanitize_text_field( wp_unslash( $_POST['w3p_local_postal_code'] ?? '' ) ) );
+                    update_option( 'w3p_local_country', sanitize_text_field( wp_unslash( $_POST['w3p_local_country'] ?? '' ) ) );
+                    update_option( 'w3p_telephone', sanitize_text_field( wp_unslash( $_POST['w3p_telephone'] ?? '' ) ) );
 
-                    update_option( 'w3p_local_image_1', sanitize_url( $_POST['w3p_local_image_1'] ) );
-                    update_option( 'w3p_local_image_2', sanitize_url( $_POST['w3p_local_image_2'] ) );
+                    update_option( 'w3p_local_image_1', sanitize_url( wp_unslash( $_POST['w3p_local_image_1'] ?? '' ) ) );
+                    update_option( 'w3p_local_image_2', sanitize_url( wp_unslash( $_POST['w3p_local_image_2'] ?? '' ) ) );
 
                     echo '<div class="updated notice is-dismissible"><p>Settings updated!</p></div>';
                 }
@@ -404,9 +404,9 @@ function w3p_settings() {
                         wp_die( esc_html__( 'Nonce verification failed. Please try again.', 'w3p-seo' ) );
                     }
 
-                    update_option( 'w3p_kg_type', sanitize_text_field( $_POST['w3p_kg_type'] ) );
-                    update_option( 'w3p_kg_name', sanitize_text_field( $_POST['w3p_kg_name'] ) );
-                    update_option( 'w3p_kg_logo', sanitize_url( $_POST['w3p_kg_logo'] ) );
+                    update_option( 'w3p_kg_type', sanitize_text_field( wp_unslash( $_POST['w3p_kg_type'] ?? '' ) ) );
+                    update_option( 'w3p_kg_name', sanitize_text_field( wp_unslash( $_POST['w3p_kg_name'] ?? '' ) ) );
+                    update_option( 'w3p_kg_logo', sanitize_url( wp_unslash( $_POST['w3p_kg_logo'] ?? '' ) ) );
 
                     $w3p_kg_same_as = isset( $_POST['w3p_kg_same_as'] ) ? sanitize_textarea_field( $_POST['w3p_kg_same_as'] ) : '';
                     update_option( 'w3p_kg_same_as', $w3p_kg_same_as );
@@ -530,8 +530,8 @@ function w3p_settings() {
                         wp_die( esc_html__( 'Nonce verification failed. Please try again.', 'w3p-seo' ) );
                     }
 
-                    update_option( 'w3p_og', (int) $_POST['w3p_og'] );
-                    update_option( 'w3p_fb_default_image', esc_url( $_POST['w3p_fb_default_image'] ) );
+                    update_option( 'w3p_og', (int) ( $_POST['w3p_og'] ?? 0 ) );
+                    update_option( 'w3p_fb_default_image', esc_url( wp_unslash( $_POST['w3p_fb_default_image'] ?? '' ) ) );
 
                     delete_option( 'w3p_fb_app_id' );
 
@@ -633,7 +633,7 @@ function w3p_settings() {
                         wp_die( esc_html__( 'Nonce verification failed. Please try again.', 'w3p-seo' ) );
                     }
 
-                    update_option( 'w3p_noindex_queries', (int) sanitize_text_field( $_POST['w3p_noindex_queries'] ) );
+                    update_option( 'w3p_noindex_queries', (int) sanitize_text_field( $_POST['w3p_noindex_queries'] ?? 0 ) );
 
                     echo '<div class="updated notice is-dismissible"><p>Settings updated!</p></div>';
                 }
@@ -678,7 +678,7 @@ function w3p_settings() {
                         wp_die( esc_html__( 'Nonce verification failed. Please try again.', 'w3p-seo' ) );
                     }
 
-                    update_option( 'w3p_sitemap_links', (int) $_POST['w3p_sitemap_links'] );
+                    update_option( 'w3p_sitemap_links', (int) sanitize_text_field( $_POST['w3p_sitemap_links'] ?? 2000 ) );
 
                     if ( $post_types ) {
                         foreach ( $post_types as $type ) {
@@ -765,7 +765,7 @@ function w3p_settings() {
                         wp_die( esc_html__( 'Nonce verification failed. Please try again.', 'w3p-seo' ) );
                     }
 
-                    update_option( 'w3p_enable_sitemap_users', (int) $_POST['w3p_enable_sitemap_users'] );
+                    update_option( 'w3p_enable_sitemap_users', (int) sanitize_text_field( $_POST['w3p_enable_sitemap_users'] ?? 0 ) );
 
                     if ( $taxonomies ) {
                         foreach ( $taxonomies as $taxonomy ) {
