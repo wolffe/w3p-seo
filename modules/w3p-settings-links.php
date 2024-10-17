@@ -4,23 +4,33 @@
 wp_enqueue_script( 'w3p-html5sortable' );
 
 if ( isset( $_POST['save_links_settings'] ) ) {
-if ( ! isset( $_POST['w3p_settings_nonce'] ) || ! check_admin_referer( 'save_w3p_settings_action', 'w3p_settings_nonce' ) ) {
-    wp_die( esc_html__( 'Nonce verification failed. Please try again.', 'w3p-seo' ) );
-}
+    if ( ! isset( $_POST['w3p_settings_nonce'] ) || ! check_admin_referer( 'save_w3p_settings_action', 'w3p_settings_nonce' ) ) {
+        wp_die( esc_html__( 'Nonce verification failed. Please try again.', 'w3p-seo' ) );
+    }
 
     $value = [];
 
-if ( isset( $_POST['w3p_link_repeater'] ) && is_array( $_POST['w3p_link_repeater'] ) ) {
-    $link_repeater = wp_unslash( $_POST['w3p_link_repeater'] );
+    if ( isset( $_POST['w3p_link_repeater'] ) && is_array( $_POST['w3p_link_repeater'] ) ) {
+        // Unslash the array
+        $link_repeater = wp_unslash( $_POST['w3p_link_repeater'] );
 
-    foreach ( $link_repeater as $repeater ) {
-        $sanitized_repeater = array_map( 'sanitize_text_field', $repeater );
+        // Sanitize the entire array using array_map
+        $sanitized_repeater = array_map(
+            function ( $repeater ) {
+                return [
+                    'title' => sanitize_text_field( $repeater['title'] ),
+                    'url'   => esc_url_raw( $repeater['url'] ),
+                    'rel'   => sanitize_text_field( $repeater['rel'] ),
+                ];
+            },
+            $link_repeater
+        );
 
-        $value[] = [
-            'title' => sanitize_text_field( $sanitized_repeater['title'] ),
-            'url'   => esc_url_raw( $sanitized_repeater['url'] ),
-            'rel'   => sanitize_text_field( $sanitized_repeater['rel'] ),
-        ];
+        // Now loop through the sanitized array if needed
+        foreach ( $sanitized_repeater as $repeater ) {
+            // Perform operations with sanitized data
+            $value[] = $repeater;
+        }
     }
 
     update_option( 'w3p_link_repeater', $value );
