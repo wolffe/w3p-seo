@@ -9,203 +9,182 @@ function w3p_schema_breadcrumbs() {
     $site_name      = get_bloginfo( 'blogname' );
 
     if ( (int) get_option( 'page_for_posts' ) > 0 ) {
-        $blog_posts_page_slug = get_permalink( get_option( 'page_for_posts' ) );
+        $blog_posts_page_slug = get_permalink( $page_for_posts );
     } else {
         $blog_posts_page_slug = trailingslashit( get_site_url( 'url' ) );
     }
 
-    if ( ! is_search() ) { ?>
-        <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            "itemListElement":
-            [
-            <?php if ( is_singular( 'post' ) ) { // if on a single blog post ?>
-                {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "item":
-                    {
-                        "@id": "<?php echo $blog_posts_page_slug; ?>",
-                        "name": "<?php echo $site_name; ?>"
-                    }
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 2,
-                    "item":
-                    {
-                        "@id": "<?php echo get_permalink(); ?>",
-                        "name": "<?php echo get_the_title(); ?>"
-                    }
-                }
-                <?php
-            } elseif ( is_singular( 'product' ) ) { // if on a single product page
-                global $post;
+    if ( ! is_search() ) {
+        $breadcrumbs = [
+            '@context'        => 'https://schema.org',
+            '@type'           => 'BreadcrumbList',
+            'itemListElement' => [],
+        ];
 
-                $terms = wp_get_object_terms( $post->ID, 'product_cat' );
-                if ( ! is_wp_error( $terms ) ) {
-                    $product_category_slug = $terms[0]->slug;
-                    $product_category_name = $terms[0]->name;
-                }
-                ?>
-                {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "item":
-                    {
-                        "@id": "<?php echo get_bloginfo( 'url' ); ?>/products/<?php echo $product_category_slug; ?>/",
-                        "name": "<?php echo $product_category_name; ?>"
-                    }
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 2,
-                    "item":
-                    {
-                        "@id": "<?php echo get_permalink(); ?>",
-                        "name": "<?php echo get_the_title(); ?>"
-                    }
-                }
-                <?php
-            } elseif ( is_page() && ! is_front_page() ) { // if on a regular WP Page
-                global $post;
+        if ( is_singular( 'post' ) ) {
+            // Single blog post
+            $breadcrumbs['itemListElement'][] = [
+                '@type'    => 'ListItem',
+                'position' => 1,
+                'item'     => [
+                    '@id'  => esc_url( $blog_posts_page_slug ),
+                    'name' => esc_html( $site_name ),
+                ],
+            ];
 
-                if ( is_page() && $post->post_parent ) { // if is a child page
-                    $post_data         = get_post( $post->post_parent );
-                    $parent_page_slug  = $post_data->post_name;
-                    $parent_page_url   = get_bloginfo( 'url' ) . '/' . $parent_page_slug . '/';
-                    $parent_page_title = ucfirst( $parent_page_slug );
-                    $position_number   = '2';
-                } else {
-                    $page_url        = get_permalink();
-                    $page_title      = '';
-                    $position_number = '1';
-                }
+            $breadcrumbs['itemListElement'][] = [
+                '@type'    => 'ListItem',
+                'position' => 2,
+                'item'     => [
+                    '@id'  => esc_url( get_permalink() ),
+                    'name' => esc_html( get_the_title() ),
+                ],
+            ];
+        } elseif ( is_singular( 'product' ) ) {
+            // Single product page
+            global $post;
+            $terms = wp_get_object_terms( $post->ID, 'product_cat' );
+            if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
+                $product_category_slug = $terms[0]->slug;
+                $product_category_name = $terms[0]->name;
 
-                if ( is_page() && $post->post_parent ) {
-                    ?>
-                    {
-                        "@type": "ListItem",
-                        "position": 1,
-                        "item":
-                        {
-                            "@id": "<?php echo $parent_page_url; ?>",
-                            "name": "<?php echo $parent_page_title; ?>"
-                        }
-                    },
-                    <?php
-                }
-                ?>
-                {
-                    "@type": "ListItem",
-                    "position": <?php echo $position_number; ?>,
-                    "item":
-                    {
-                        "@id": "<?php echo get_permalink(); ?>",
-                        "name": "<?php echo get_the_title(); ?>"
-                    }
-                }
-                <?php
-            } elseif ( is_home() ) { // if on the blog page
-                ?>
-                {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "item":
-                    {
-                        "@id": "<?php echo $blog_posts_page_slug; ?>",
-                        "name": "<?php echo $site_name; ?>"
-                    }
-                }
-                <?php
-            } elseif ( is_category() || is_tag() ) {
-                ?>
-                {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "item":
-                    {
-                        "@id": "<?php echo $blog_posts_page_slug; ?>",
-                        "name": "<?php echo $site_name; ?>"
-                    }
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 2,
-                    "item":
-                    {
-                        "@id": "<?php echo 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>",
-                        "name": "<?php echo ( is_category() ) ? single_cat_title( '', false ) : single_tag_title( '', false ); ?>"
-                    }
-                }
-                <?php
-            } elseif ( is_tax( 'product_cat' ) || is_tax( 'product_tag' ) ) { // product category and taxonomy pages
-                global $post;
+                $breadcrumbs['itemListElement'][] = [
+                    '@type'    => 'ListItem',
+                    'position' => 1,
+                    'item'     => [
+                        '@id'  => esc_url( get_bloginfo( 'url' ) . '/products/' . $product_category_slug . '/' ),
+                        'name' => esc_html( $product_category_name ),
+                    ],
+                ];
 
-                $termname = get_query_var( 'term' );
-                $termname = ucfirst( $termname );
-                ?>
-                {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "item":
-                    {
-                        "@id": "<?php echo get_bloginfo( 'url' ); ?>",
-                        "name": "Store"
-                    }
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 2,
-                    "item":
-                    {
-                        "@id": "<?php echo 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>",
-                        "name": "<?php echo $termname; ?>"
-                    }
-                }
-                <?php
-            } elseif ( is_archive() ) { // date based archives and a catch all for the rest
-                ?>
-                {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "item":
-                    {
-                        "@id": "<?php echo $blog_posts_page_slug; ?>",
-                        "name": "<?php echo $site_name; ?>"
-                    }
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 2,
-                    "item":
-                    {
-                        "@id": "<?php echo 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>",
-                        "name": "Archives"
-                    }
-                }
-                <?php
-            } else {
-                ?>
-                {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "item":
-                        {
-                        "@id": "<?php echo 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>",
-                        "name": "Page"
-                    }
-                }
-                <?php
+                $breadcrumbs['itemListElement'][] = [
+                    '@type'    => 'ListItem',
+                    'position' => 2,
+                    'item'     => [
+                        '@id'  => esc_url( get_permalink() ),
+                        'name' => esc_html( get_the_title() ),
+                    ],
+                ];
             }
-            ?>
-            ]
+        } elseif ( is_page() && ! is_front_page() ) {
+            // Regular page
+            global $post;
+
+            if ( $post->post_parent ) {
+                $parent_page_url   = get_permalink( $post->post_parent );
+                $parent_page_title = get_the_title( $post->post_parent );
+
+                $breadcrumbs['itemListElement'][] = [
+                    '@type'    => 'ListItem',
+                    'position' => 1,
+                    'item'     => [
+                        '@id'  => esc_url( $parent_page_url ),
+                        'name' => esc_html( $parent_page_title ),
+                    ],
+                ];
+            }
+
+            $breadcrumbs['itemListElement'][] = [
+                '@type'    => 'ListItem',
+                'position' => $post->post_parent ? 2 : 1,
+                'item'     => [
+                    '@id'  => esc_url( get_permalink() ),
+                    'name' => esc_html( get_the_title() ),
+                ],
+            ];
+        } elseif ( is_home() ) {
+            // Blog page
+            $breadcrumbs['itemListElement'][] = [
+                '@type'    => 'ListItem',
+                'position' => 1,
+                'item'     => [
+                    '@id'  => esc_url( $blog_posts_page_slug ),
+                    'name' => esc_html( $site_name ),
+                ],
+            ];
+        } elseif ( is_category() || is_tag() ) {
+            // Category or Tag archive
+            $breadcrumbs['itemListElement'][] = [
+                '@type'    => 'ListItem',
+                'position' => 1,
+                'item'     => [
+                    '@id'  => esc_url( $blog_posts_page_slug ),
+                    'name' => esc_html( $site_name ),
+                ],
+            ];
+
+            if ( isset( $_SERVER['HTTP_HOST'] ) && isset( $_SERVER['REQUEST_URI'] ) ) {
+                $breadcrumbs['itemListElement'][] = [
+                    '@type'    => 'ListItem',
+                    'position' => 2,
+                    'item'     => [
+                        '@id'  => esc_url( 'https://' . sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) . sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ),
+                        'name' => is_category() ? single_cat_title( '', false ) : single_tag_title( '', false ),
+                    ],
+                ];
+            }
+        } elseif ( is_tax( 'product_cat' ) || is_tax( 'product_tag' ) ) {
+            // Product category or tag archive
+            $termname = ucfirst( get_query_var( 'term' ) );
+
+            $breadcrumbs['itemListElement'][] = [
+                '@type'    => 'ListItem',
+                'position' => 1,
+                'item'     => [
+                    '@id'  => esc_url( get_bloginfo( 'url' ) ),
+                    'name' => 'Store',
+                ],
+            ];
+
+            if ( isset( $_SERVER['HTTP_HOST'] ) && isset( $_SERVER['REQUEST_URI'] ) ) {
+                $breadcrumbs['itemListElement'][] = [
+                    '@type'    => 'ListItem',
+                    'position' => 2,
+                    'item'     => [
+                        '@id'  => esc_url( 'https://' . sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) . sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ),
+                        'name' => esc_html( $termname ),
+                    ],
+                ];
+            }
+        } elseif ( is_archive() ) {
+            // Date-based or other archive pages
+            $breadcrumbs['itemListElement'][] = [
+                '@type'    => 'ListItem',
+                'position' => 1,
+                'item'     => [
+                    '@id'  => esc_url( $blog_posts_page_slug ),
+                    'name' => esc_html( $site_name ),
+                ],
+            ];
+
+            if ( isset( $_SERVER['HTTP_HOST'] ) && isset( $_SERVER['REQUEST_URI'] ) ) {
+                $breadcrumbs['itemListElement'][] = [
+                    '@type'    => 'ListItem',
+                    'position' => 2,
+                    'item'     => [
+                        '@id'  => esc_url( 'https://' . sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) . sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ),
+                        'name' => 'Archives',
+                    ],
+                ];
+            }
+        } else {
+            // Default fallback
+            if ( isset( $_SERVER['HTTP_HOST'] ) && isset( $_SERVER['REQUEST_URI'] ) ) {
+                $breadcrumbs['itemListElement'][] = [
+                    '@type'    => 'ListItem',
+                    'position' => 1,
+                    'item'     => [
+                        '@id'  => esc_url( 'https://' . sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) . sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ),
+                        'name' => 'Page',
+                    ],
+                ];
+            }
         }
-        </script>
-        <?php
+
+        // Output the JSON-LD Breadcrumbs
+        echo '<script type="application/ld+json">' . wp_json_encode( $breadcrumbs, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>';
     }
 }
+
 
 add_action( 'wp_footer', 'w3p_schema_breadcrumbs' );
