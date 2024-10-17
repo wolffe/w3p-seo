@@ -8,7 +8,7 @@ function w3p_settings() {
     <div class="wrap wrap--w3p">
         <h2><?php esc_html_e( 'W3P SEO Settings', 'w3p-seo' ); ?></h2>
 
-        <?php $tab = isset( $_GET['tab'] ) ? (string) sanitize_text_field( $_GET['tab'] ) : 'dashboard'; ?>
+        <?php $tab = isset( $_GET['tab'] ) ? (string) sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'dashboard'; ?>
 
         <h2 class="nav-tab-wrapper">
             <a href="<?php echo esc_url( admin_url( 'admin.php?page=w3p&amp;tab=dashboard' ) ); ?>" class="nav-tab <?php echo $tab === 'dashboard' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Dashboard', 'w3p-seo' ); ?></a>
@@ -56,14 +56,13 @@ function w3p_settings() {
                     wp_die( esc_html__( 'Nonce verification failed. Please try again.', 'w3p-seo' ) );
                 }
 
-                update_option( 'w3p_enable_title_description', (int) sanitize_text_field( $_POST['w3p_enable_title_description'] ) );
-                update_option( 'w3p_enable_sitemap', (int) sanitize_text_field( $_POST['w3p_enable_sitemap'] ) );
-                update_option( 'w3p_enable_link_whisper', (int) sanitize_text_field( $_POST['w3p_enable_link_whisper'] ) );
-                update_option( 'w3p_enable_yoast_migrator', (int) sanitize_text_field( $_POST['w3p_enable_yoast_migrator'] ) );
-                update_option( 'w3p_enable_rankmath_migrator', (int) sanitize_text_field( $_POST['w3p_enable_rankmath_migrator'] ) );
-
-                update_option( 'w3p_schema_breadcrumbs', (int) sanitize_text_field( $_POST['w3p_schema_breadcrumbs'] ) );
-                update_option( 'w3p_image_alt', (int) sanitize_text_field( $_POST['w3p_image_alt'] ) );
+                update_option( 'w3p_enable_title_description', (int) sanitize_text_field( wp_unslash( $_POST['w3p_enable_title_description'] ?? 0 ) ) );
+                update_option( 'w3p_enable_sitemap', (int) sanitize_text_field( wp_unslash( $_POST['w3p_enable_sitemap'] ?? 0 ) ) );
+                update_option( 'w3p_enable_link_whisper', (int) sanitize_text_field( wp_unslash( $_POST['w3p_enable_link_whisper'] ?? 0 ) ) );
+                update_option( 'w3p_enable_yoast_migrator', (int) sanitize_text_field( wp_unslash( $_POST['w3p_enable_yoast_migrator'] ?? 0 ) ) );
+                update_option( 'w3p_enable_rankmath_migrator', (int) sanitize_text_field( wp_unslash( $_POST['w3p_enable_rankmath_migrator'] ?? 0 ) ) );
+                update_option( 'w3p_schema_breadcrumbs', (int) sanitize_text_field( wp_unslash( $_POST['w3p_schema_breadcrumbs'] ?? 0 ) ) );
+                update_option( 'w3p_image_alt', (int) sanitize_text_field( wp_unslash( $_POST['w3p_image_alt'] ?? 0 ) ) );
 
                 delete_option( 'w3p_image_license_url' );
                 delete_option( 'w3p_image_acquire_license_url' );
@@ -146,13 +145,12 @@ function w3p_settings() {
                         wp_die( esc_html__( 'Nonce verification failed. Please try again.', 'w3p-seo' ) );
                     }
 
-                    update_option( 'w3p_google_webmaster', sanitize_text_field( $_POST['w3p_google_webmaster'] ) );
-                    update_option( 'w3p_bing_webmaster', sanitize_text_field( $_POST['w3p_bing_webmaster'] ) );
-                    update_option( 'w3p_yandex_webmaster', sanitize_text_field( $_POST['w3p_yandex_webmaster'] ) );
-                    update_option( 'w3p_pinterest_webmaster', sanitize_text_field( $_POST['w3p_pinterest_webmaster'] ) );
-                    update_option( 'w3p_baidu_webmaster', sanitize_text_field( $_POST['w3p_baidu_webmaster'] ) );
-
-                    update_option( 'w3p_twitter_author', sanitize_text_field( $_POST['w3p_twitter_author'] ) );
+                    update_option( 'w3p_google_webmaster', sanitize_text_field( wp_unslash( $_POST['w3p_google_webmaster'] ?? '' ) ) );
+                    update_option( 'w3p_bing_webmaster', sanitize_text_field( wp_unslash( $_POST['w3p_bing_webmaster'] ?? '' ) ) );
+                    update_option( 'w3p_yandex_webmaster', sanitize_text_field( wp_unslash( $_POST['w3p_yandex_webmaster'] ?? '' ) ) );
+                    update_option( 'w3p_pinterest_webmaster', sanitize_text_field( wp_unslash( $_POST['w3p_pinterest_webmaster'] ?? '' ) ) );
+                    update_option( 'w3p_baidu_webmaster', sanitize_text_field( wp_unslash( $_POST['w3p_baidu_webmaster'] ?? '' ) ) );
+                    update_option( 'w3p_twitter_author', sanitize_text_field( wp_unslash( $_POST['w3p_twitter_author'] ?? '' ) ) );
 
                     delete_option( 'w3p_wot_webmaster' );
                     delete_option( 'w3p_majestic_webmaster' );
