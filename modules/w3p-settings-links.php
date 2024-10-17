@@ -4,8 +4,11 @@
 wp_enqueue_script( 'w3p-html5sortable' );
 
 if ( isset( $_POST['save_links_settings'] ) ) {
-    //if ( isset( $_POST['w3p_link_repeater'] ) ) {
-        $value = [];
+    if ( ! isset( $_POST['w3p_settings_nonce'] ) || ! check_admin_referer( 'save_w3p_settings_action', 'w3p_settings_nonce' ) ) {
+        wp_die( esc_html__( 'Nonce verification failed. Please try again.', 'wp-perfect-plugin' ) );
+    }
+
+    $value = [];
 
     foreach ( $_POST['w3p_link_repeater'] as $repeater ) {
         $value[] = [
@@ -15,12 +18,13 @@ if ( isset( $_POST['save_links_settings'] ) ) {
         ];
     }
 
-        update_option( 'w3p_link_repeater', $value );
-    //}
+    update_option( 'w3p_link_repeater', $value );
 }
 ?>
 
 <form method="post" action="">
+    <?php wp_nonce_field( 'save_w3p_settings_action', 'w3p_settings_nonce' ); ?>
+
     <div class="w3p-grid-container" style="grid-template-columns: repeat(1, 1fr);">
         <h3>Links/Phrases</h3>
 
@@ -41,11 +45,11 @@ if ( isset( $_POST['save_links_settings'] ) ) {
 
                 foreach ( $value_repeater as $i => $repeater ) {
                     ?>
-                    <div class="w3p-repeater-field" data-index="<?php echo $i; ?>" draggable="true">
+                    <div class="w3p-repeater-field" data-index="<?php echo intval( $i ); ?>" draggable="true">
                         <span class="dashicons dashicons-move"></span>
-                        <input type="text" class="regular-text" name="w3p_link_repeater[<?php echo $i; ?>][title]" placeholder="Title" value="<?php echo $repeater['title']; ?>">
-                        <input type="url" class="regular-text" name="w3p_link_repeater[<?php echo $i; ?>][url]" placeholder="URL" value="<?php echo $repeater['url']; ?>">
-                        <input type="text" class="regular-text" name="w3p_link_repeater[<?php echo $i; ?>][rel]" placeholder="Relationship" value="<?php echo $repeater['rel']; ?>">
+                        <input type="text" class="regular-text" name="w3p_link_repeater[<?php echo intval( $i ); ?>][title]" placeholder="Title" value="<?php echo esc_attr( $repeater['title'] ); ?>">
+                        <input type="url" class="regular-text" name="w3p_link_repeater[<?php echo intval( $i ); ?>][url]" placeholder="URL" value="<?php echo esc_url( $repeater['url'] ); ?>">
+                        <input type="text" class="regular-text" name="w3p_link_repeater[<?php echo intval( $i ); ?>][rel]" placeholder="Relationship" value="<?php echo esc_attr( $repeater['rel'] ); ?>">
                         <button type="button" class="button button-secondary w3p-remove-repeater-field">Remove</button>
                     </div>
                 <?php } ?>
@@ -60,7 +64,7 @@ if ( isset( $_POST['save_links_settings'] ) ) {
     <hr>
 
     <p>
-        <input type="submit" name="save_links_settings" class="button button-primary" value="<?php _e( 'Save Changes', 'w3p-seo' ); ?>">
+        <input type="submit" name="save_links_settings" class="button button-primary" value="<?php esc_html_e( 'Save Changes', 'wp-perfect-plugin' ); ?>">
     </p>
 </form>
 
