@@ -11,19 +11,9 @@ if ( isset( $_POST['save_links_settings'] ) ) {
     $value = [];
 
     if ( isset( $_POST['w3p_link_repeater'] ) && is_array( $_POST['w3p_link_repeater'] ) ) {
-        // Unslash the entire array first
-        $unslashed_repeater = wp_unslash( $_POST['w3p_link_repeater'] );
+        $sanitized_input = map_deep( wp_unslash( $_POST['w3p_link_repeater'] ), 'sanitize_text_field' );
 
-        // Then sanitize the unslashed array
-        $sanitized_repeater = array_map(
-            function ( $item ) {
-                return array_map( 'sanitize_text_field', $item );
-            },
-            $unslashed_repeater
-        );
-
-        $value = [];
-        foreach ( $sanitized_repeater as $repeater ) {
+        foreach ( $sanitized_input as $index => $repeater ) {
             $value[] = [
                 'title' => isset( $repeater['title'] ) ? $repeater['title'] : '',
                 'url'   => isset( $repeater['url'] ) ? esc_url_raw( $repeater['url'] ) : '',
