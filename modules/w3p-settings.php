@@ -303,7 +303,7 @@ function w3p_settings() {
                                         }
 
                                         if ( ! empty( $_POST['image_1'] ) ) {
-                                            $image_url = esc_url( wp_unslash( $_POST['image_1'] ) );
+                                            $image_url = esc_url_raw( wp_unslash( $_POST['image_1'] ) );
                                         }
                                         ?>
                                         <input id="w3p-image-url-1" type="hidden" name="w3p_local_image_1" value="<?php echo esc_url( get_option( 'w3p_local_image_1' ) ); ?>">
@@ -324,7 +324,7 @@ function w3p_settings() {
                                         }
 
                                         if ( ! empty( $_POST['image_2'] ) ) {
-                                            $image_url = esc_url( wp_unslash( $_POST['image_2'] ) );
+                                            $image_url = esc_url_raw( wp_unslash( $_POST['image_2'] ) );
                                         }
                                         ?>
                                         <input id="w3p-image-url-2" type="hidden" name="w3p_local_image_2" value="<?php echo esc_url( get_option( 'w3p_local_image_2' ) ); ?>">
@@ -460,7 +460,7 @@ function w3p_settings() {
                                         }
 
                                         if ( ! empty( $_POST['image'] ) ) {
-                                            $image_url = esc_url( wp_unsplash( $_POST['image'] ) );
+                                            $image_url = esc_url_raw( wp_unsplash( $_POST['image'] ) );
                                         }
 
                                         wp_enqueue_media();
@@ -530,8 +530,8 @@ function w3p_settings() {
                         wp_die( esc_html__( 'Nonce verification failed. Please try again.', 'w3p-seo' ) );
                     }
 
-                    update_option( 'w3p_og', (int) ( $_POST['w3p_og'] ?? 0 ) );
-                    update_option( 'w3p_fb_default_image', esc_url( wp_unslash( $_POST['w3p_fb_default_image'] ?? '' ) ) );
+                    update_option( 'w3p_og', (int) ( sanitize_text_field( wp_unslash( $_POST['w3p_og'] ) ) ?? 0 ) );
+                    update_option( 'w3p_fb_default_image', esc_url_raw( wp_unslash( $_POST['w3p_fb_default_image'] ?? '' ) ) );
 
                     delete_option( 'w3p_fb_app_id' );
 
@@ -578,7 +578,7 @@ function w3p_settings() {
                                         }
 
                                         if ( ! empty( $_POST['image'] ) ) {
-                                            $image_url = esc_url( wp_unsplash( $_POST['image'] ) );
+                                            $image_url = esc_url_raw( wp_unsplash( $_POST['image'] ) );
                                         }
 
                                         wp_enqueue_media();
@@ -633,7 +633,7 @@ function w3p_settings() {
                         wp_die( esc_html__( 'Nonce verification failed. Please try again.', 'w3p-seo' ) );
                     }
 
-                    update_option( 'w3p_noindex_queries', (int) sanitize_text_field( wp_unslash( $_POST['w3p_noindex_queries'] ) ?? 0 ) );
+                    update_option( 'w3p_noindex_queries', (int) sanitize_text_field( wp_unslash( $_POST['w3p_noindex_queries'] ?? 0 ) ) );
 
                     echo '<div class="updated notice is-dismissible"><p>Settings updated!</p></div>';
                 }
