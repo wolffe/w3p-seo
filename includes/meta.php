@@ -5,7 +5,7 @@
  * @param post $post The post object
  */
 function w3p_add_meta_boxes( $post ) {
-    add_meta_box( 'w3p_meta_box', __( 'W3P SEO Settings', 'wp-perfect-plugin' ), 'w3p_build_meta_box', [ 'post', 'page', 'faq' ], 'normal', 'high' );
+    add_meta_box( 'w3p_meta_box', __( 'W3P SEO Settings', 'w3p-seo' ), 'w3p_build_meta_box', [ 'post', 'page', 'faq' ], 'normal', 'high' );
 }
 
 if ( (int) get_option( 'w3p_enable_title_description' ) === 1 ) {
@@ -24,14 +24,20 @@ function w3p_build_meta_box( $post ) {
 
     $w3p_title   = get_post_meta( $post->ID, '_w3p_title', true );
     $w3p_excerpt = get_post_meta( $post->ID, '_w3p_excerpt', true );
+
+    $enable_yoast_migrator    = (int) get_option( 'w3p_enable_yoast_migrator' );
+    $enable_rankmath_migrator = (int) get_option( 'w3p_enable_rankmath_migrator' );
     ?>
     <p>
         <label for="w3p-title">SEO Title</label>
-        <input type="text" name="w3p_title" id="w3p-title" class="regular-text" style="width: 100%;" value="<?php echo $w3p_title; ?>">
+        <input type="text" name="w3p_title" id="w3p-title" class="regular-text" style="width: 100%;" value="<?php echo esc_html( $w3p_title ); ?>">
     </p>
 
-    <?php if ( (int) get_option( 'w3p_enable_yoast_migrator' ) === 1 ) { ?>
-        <p><b>Yoast Migrator:</b> <?php echo get_post_meta( $post->ID, '_yoast_wpseo_title', true ); ?></p>
+    <?php if ( $enable_yoast_migrator === 1 ) { ?>
+        <p><b>Yoast Migrator:</b> <?php echo esc_html( get_post_meta( $post->ID, '_yoast_wpseo_title', true ) ); ?></p>
+    <?php } ?>
+    <?php if ( $enable_rankmath_migrator === 1 ) { ?>
+        <p><b>Rank Math Migrator:</b> <?php echo esc_html( get_post_meta( $post->ID, 'rank_math_title', true ) ); ?></p>
     <?php } ?>
 
     <div class="meter-container">
@@ -40,12 +46,15 @@ function w3p_build_meta_box( $post ) {
 
     <p>
         <label for="w3p-excerpt">SEO Meta Description</label>
-        <textarea type="text" name="w3p_excerpt" id="w3p-excerpt" class="regular-text large" style="width: 100%;" rows="4"><?php echo $w3p_excerpt; ?></textarea>
+        <textarea type="text" name="w3p_excerpt" id="w3p-excerpt" class="regular-text large" style="width: 100%;" rows="4"><?php echo esc_html( $w3p_excerpt ); ?></textarea>
         <br><small>This description is used for SEO meta description(s), Open Graph tags and post excerpt.</small>
     </p>
 
-    <?php if ( (int) get_option( 'w3p_enable_yoast_migrator' ) === 1 ) { ?>
-        <p><b>Yoast Migrator:</b> <?php echo get_post_meta( $post->ID, '_yoast_wpseo_metadesc', true ); ?></p>
+    <?php if ( $enable_yoast_migrator === 1 ) { ?>
+        <p><b>Yoast Migrator:</b> <?php echo esc_html( get_post_meta( $post->ID, '_yoast_wpseo_metadesc', true ) ); ?></p>
+    <?php } ?>
+    <?php if ( $enable_rankmath_migrator === 1 ) { ?>
+        <p><b>Rank Math Migrator:</b> <?php echo esc_html( get_post_meta( $post->ID, 'rank_math_description', true ) ); ?></p>
     <?php } ?>
 
     <div class="meter-container">
@@ -62,7 +71,7 @@ function w3p_build_meta_box( $post ) {
  * @param int $post_id The post ID.
  */
 function w3p_save_meta_box_data( $post_id ) {
-    if ( ! isset( $_POST['w3p_meta_box_nonce'] ) || ! wp_verify_nonce( $_POST['w3p_meta_box_nonce'], basename( __FILE__ ) ) ) {
+    if ( ! isset( $_POST['w3p_meta_box_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['w3p_meta_box_nonce'] ) ), basename( __FILE__ ) ) ) {
         return;
     }
     if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
@@ -72,8 +81,8 @@ function w3p_save_meta_box_data( $post_id ) {
         return;
     }
 
-    $w3p_title   = isset( $_POST['w3p_title'] ) ? sanitize_text_field( $_POST['w3p_title'] ) : get_the_title( $post_id );
-    $w3p_excerpt = isset( $_POST['w3p_excerpt'] ) ? sanitize_textarea_field( $_POST['w3p_excerpt'] ) : w3p_get_excerpt( $post_id );
+    $w3p_title   = isset( $_POST['w3p_title'] ) ? sanitize_text_field( wp_unslash( $_POST['w3p_title'] ) ) : esc_html( get_the_title( $post_id ) );
+    $w3p_excerpt = isset( $_POST['w3p_excerpt'] ) ? sanitize_textarea_field( wp_unslash( $_POST['w3p_excerpt'] ) ) : esc_textarea( w3p_get_excerpt( $post_id ) );
 
     update_post_meta( $post_id, '_w3p_title', $w3p_title );
     update_post_meta( $post_id, '_w3p_excerpt', $w3p_excerpt );
