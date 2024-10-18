@@ -23,17 +23,6 @@ For support, feature requests and bug reporting, please visit the [official webs
 
 Upload and activate the plugin.
 
-== Screenshots ==
-
-1. Search Engine Verification And Link Relationships
-2. Homepage Details
-3. Local Business Details
-4. Analytics and Tag Management
-5. Header/Footer Management
-6. Open Graph
-7. Miscellaneous
-9. Plugin Dashboard
-
 == Changelog ==
 
 = 1.8.1 =
