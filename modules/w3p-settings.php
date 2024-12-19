@@ -30,13 +30,12 @@ function w3p_settings() {
 
             <div class="gb-ad">
                 <h3><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 68 68"><defs/><rect width="100%" height="100%" fill="none"/><g class="currentLayer"><path fill="#313457" d="M34.76 33C22.85 21.1 20.1 13.33 28.23 5.2 36.37-2.95 46.74.01 50.53 3.8c3.8 3.8 5.14 17.94-5.04 28.12-2.95 2.95-5.97 5.84-5.97 5.84L34.76 33"/><path fill="#313457" d="M43.98 42.21c5.54 5.55 14.59 11.06 20.35 5.3 5.76-5.77 3.67-13.1.98-15.79-2.68-2.68-10.87-5.25-18.07 1.96-2.95 2.95-5.96 5.84-5.96 5.84l2.7 2.7m-1.76 1.75c5.55 5.54 11.06 14.59 5.3 20.35-5.77 5.76-13.1 3.67-15.79.98-2.69-2.68-5.25-10.87 1.95-18.07 2.85-2.84 5.84-5.96 5.84-5.96l2.7 2.7"/><path fill="#313457" d="M33 34.75c-11.9-11.9-19.67-14.67-27.8-6.52-8.15 8.14-5.2 18.5-1.4 22.3 3.8 3.79 17.95 5.13 28.13-5.05 3.1-3.11 5.84-5.97 5.84-5.97L33 34.75"/></g></svg> Thank you for using W3P SEO!</h3>
-                <p>W3P aims to provide advanced SEO options for any web developer.</p>
-                <p>If you enjoy this plugin, do not forget to <a href="https://wordpress.org/support/plugin/wp-perfect-plugin/reviews/?filter=5" rel="external">rate it on WordPress.org</a>! We work hard to update it, fix bugs, add new features and make it compatible with the latest web technologies.</p>
+                <p><b>W3P SEO</b> aims to provide advanced SEO options for any web developer.</p>
                 <p style="font-size:14px">
                     <b>Featured plugins:</b>&#32;
                     🔥 <a href="https://getbutterfly.com/wordpress-plugins/active-analytics/" target="_blank" rel="external noopener">Active Analytics</a> and&#32;
                     🚀 <a href="https://getbutterfly.com/wordpress-plugins/lighthouse/" target="_blank" rel="external noopener">WP Lighthouse</a>&#32;
-                    Have you tried our other <a href="https://getbutterfly.com/wordpress-plugins/">WordPress plugins</a> or <a href="https://directory.classicpress.net/developer/getbutterfly/">ClassicPress plugins</a>?
+                    Have you tried our other <a href="https://directory.classicpress.net/developer/getbutterfly/">ClassicPress plugins</a> or <a href="https://getbutterfly.com/wordpress-plugins/">WordPress plugins</a>?
                 </p>
             </div>
 
