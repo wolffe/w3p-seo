@@ -4,8 +4,8 @@ Tags: seo, sitemap, local, google, webmaster
 Requires at least: 4.9
 Requires PHP: 7.1
 Requires CP: 2.0
-Tested up to: 6.6
-Stable tag: 1.8.1
+Tested up to: 6.7.1
+Stable tag: 1.8.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -13,17 +13,22 @@ W3P SEO provides the minimum SEO/SEM/local/marketing options for any site owner.
 
 == Description ==
 
-W3P SEO has options for search engines, such as ownership verification, local business JSON-LD data, Open Graph, analytics, header and footer easy code insertion and optimized SEO defaults.
+W3P SEO has options for search engines, such as ownership verification, local business JSON-LD data, Open Graph, analytics, and optimized SEO defaults.
 
 W3P SEO also features native XML sitemaps and advanced topic clustering settings.
 
-For support, feature requests and bug reporting, please visit the [official website](https://getbutterfly.com/wordpress-plugins/ "getButterfly").
+For support, feature requests and bug reporting, please visit the [official website](https://getbutterfly.com/wordpress-plugins/w3p-seo/ "getButterfly - W3P SEO").
 
 == Installation ==
 
 Upload and activate the plugin.
 
 == Changelog ==
+
+= 1.8.2 =
+* Add the proper "WRP SEO" plugin name in a few places
+* Remove several WordPress references
+* Remove obsolete Web of Trust references
 
 = 1.8.1 =
 * FIX: Pass all CPCS guidelines

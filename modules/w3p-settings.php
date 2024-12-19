@@ -162,7 +162,7 @@ function w3p_settings() {
 
                     <h3><?php esc_html_e( 'Search Engine Verification And Link Relationships', 'w3p-seo' ); ?></h3>
 
-                    <p><span class="dashicons dashicons-editor-help"></span> This section allows you to verify ownership of your site with Google Search Console, Bing Webmaster Tools, Yandex, Pinterest, and Baidu and Web of Trust.</p>
+                    <p><span class="dashicons dashicons-editor-help"></span> This section allows you to verify ownership of your site with Google Search Console, Bing Webmaster Tools, Yandex, Pinterest, and Baidu.</p>
                     <p>
                         <input name="w3p_google_webmaster" type="text" class="regular-text" value="<?php echo esc_attr( get_option( 'w3p_google_webmaster' ) ); ?>"> <label>Google Search Console</label>
                         <br><small>&lt;meta name="google-site-verification" content="Volxdfasfasd3i3e_wATasfdsSDb0uFqvNVhLk7ZVY"&gt;</small>
@@ -643,7 +643,7 @@ function w3p_settings() {
                     <table class="form-table">
                         <tbody>
                             <tr>
-                                <th scope="row" colspan="2"><h3>General Settings</h3></th>
+                                <th scope="row" colspan="2"><h3>Crawl Optimization</h3></th>
                             </tr>
                             <tr>
                                 <th scope="row"><label>Crawl Optimization</label></th>
@@ -691,7 +691,7 @@ function w3p_settings() {
                 }
                 ?>
                 <p>This section allows you to customize which post types you want displayed in your XML sitemap.</p>
-                <p>By default, when you install W3P, all post types are hidden. You can include post types by ticking the boxes below.</p>
+                <p>By default, when you install W3P SEO, all post types are hidden. You can include post types by ticking the boxes below.</p>
 
                 <p><a href="<?php echo esc_url( trailingslashit( home_url( '/' ) ) ); ?>wp-sitemap.xml">See your sitemap here.</a></p>
 
@@ -778,7 +778,7 @@ function w3p_settings() {
                 }
                 ?>
                 <p>This section allows you to customize which taxonomies you want displayed in your XML sitemap.</p>
-                <p>By default, when you install W3P, all taxonomies are hidden. You can include taxonomies by ticking the boxes below.</p>
+                <p>By default, when you install W3P SEO, all taxonomies are hidden. You can include taxonomies by ticking the boxes below.</p>
 
                 <form method="post" action="">
                     <?php wp_nonce_field( 'save_w3p_settings_action', 'w3p_settings_nonce' ); ?>
