@@ -18,7 +18,7 @@ jobs:
             sed -i '/^\t<!-- start config -->.*/a\
               <file>.</file>
               ' phpcs.xml
-            sed -i '/MY_DOMAIN/ s//CHANGE-THIS-TO-YOUR-TEXT-DOMAIN/' phpcs.xml
+            sed -i '/MY_DOMAIN/ s//w3p-seo/' phpcs.xml
             mv phpcs.xml phpcs.xml.dist
         - name: CPCS checks
           uses: 10up/wpcs-action@v1.7.0
