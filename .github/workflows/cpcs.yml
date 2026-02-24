@@ -21,7 +21,7 @@ jobs:
                   sed -i '/MY_DOMAIN/ s//w3p-seo/' phpcs.xml
                   cp phpcs.xml phpcs.xml.dist
             - name: CPCS checks
-              uses: 10up/wpcs-action@stable
+              uses: 10up/wpcs-action@1.7.0
               with:
                   use_local_config: "true"
                   enable_warnings: "true"
