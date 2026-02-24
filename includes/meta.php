@@ -41,7 +41,7 @@ function w3p_build_meta_box( $post ) {
     <?php } ?>
 
     <div class="meter-container">
-        <meter id="w3p-meter--title" min="0" max="60" value="0" low="20" high="40" optimum="50"></meter>
+        <span class="meter-counter" id="w3p-title-counter"><span class="meter-current">0</span>/60</span>
     </div>
 
     <p>
@@ -58,8 +58,32 @@ function w3p_build_meta_box( $post ) {
     <?php } ?>
 
     <div class="meter-container">
-        <meter id="w3p-meter--excerpt" min="0" max="160" value="0" low="120" high="140" optimum="150"></meter>
+        <span class="meter-counter" id="w3p-excerpt-counter"><span class="meter-current">0</span>/160</span>
     </div>
+    
+    <p>
+        <input name="w3p_noindex" id="w3p-noindex" type="checkbox" value="1" <?php checked( 1, (int) get_post_meta( $post->ID, '_w3p_noindex', true ) ); ?>>
+        <label for="w3p-noindex">Hide from search engines (noindex, nofollow)</label>
+        <br><small>Check this box to prevent search engines from indexing this page and following links on it.</small>
+    </p>
+    <script>
+    (function() {
+        const title = document.getElementById('w3p-title');
+        const excerpt = document.getElementById('w3p-excerpt');
+        const titleCounter = document.querySelector('#w3p-title-counter .meter-current');
+        const excerptCounter = document.querySelector('#w3p-excerpt-counter .meter-current');
+
+        titleCounter.textContent = title.value.length;
+        title.addEventListener('input', () => {
+            titleCounter.textContent = title.value.length;
+        });
+
+        excerptCounter.textContent = excerpt.value.length;
+        excerpt.addEventListener('input', () => {
+            excerptCounter.textContent = excerpt.value.length;
+        });
+    })();
+    </script>
     <?php
 }
 
@@ -83,9 +107,11 @@ function w3p_save_meta_box_data( $post_id ) {
 
     $w3p_title   = isset( $_POST['w3p_title'] ) ? sanitize_text_field( wp_unslash( $_POST['w3p_title'] ) ) : esc_html( get_the_title( $post_id ) );
     $w3p_excerpt = isset( $_POST['w3p_excerpt'] ) ? sanitize_textarea_field( wp_unslash( $_POST['w3p_excerpt'] ) ) : esc_textarea( w3p_get_excerpt( $post_id ) );
+    $w3p_noindex = isset( $_POST['w3p_noindex'] ) ? 1 : 0;
 
     update_post_meta( $post_id, '_w3p_title', $w3p_title );
     update_post_meta( $post_id, '_w3p_excerpt', $w3p_excerpt );
+    update_post_meta( $post_id, '_w3p_noindex', $w3p_noindex );
 }
 
 add_action( 'save_post', 'w3p_save_meta_box_data' );

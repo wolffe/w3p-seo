@@ -6,9 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function w3p_search_console_head() {
     $w3p_google_meta    = get_option( 'w3p_google_webmaster' );
     $w3p_bing_meta      = get_option( 'w3p_bing_webmaster' );
-    $w3p_yandex_meta    = get_option( 'w3p_yandex_webmaster' );
     $w3p_pinterest_meta = get_option( 'w3p_pinterest_webmaster' );
-    $w3p_baidu_meta     = get_option( 'w3p_baidu_webmaster' );
 
     $twitter_author_rel = get_option( 'w3p_twitter_author' );
 
@@ -21,14 +19,8 @@ function w3p_search_console_head() {
     if ( ! empty( $w3p_bing_meta ) ) {
         echo '<meta name="msvalidate.01" content="' . esc_attr( $w3p_bing_meta ) . '">';
     }
-    if ( ! empty( $w3p_yandex_meta ) ) {
-        echo '<meta name="yandex-verification" content="' . esc_attr( $w3p_yandex_meta ) . '">';
-    }
     if ( ! empty( $w3p_pinterest_meta ) ) {
         echo '<meta name="p:domain_verify" content="' . esc_attr( $w3p_pinterest_meta ) . '">';
-    }
-    if ( ! empty( $w3p_baidu_meta ) ) {
-        echo '<meta name="baidu-site-verification" content="' . esc_attr( $w3p_baidu_meta ) . '">';
     }
 
     /**
@@ -44,20 +36,22 @@ function w3p_search_console_head() {
 function w3p_search_console_footer() {
     $out = '';
 
-    $w3p_local             = get_option( 'w3p_local' );
-    $w3p_local_locality    = get_option( 'w3p_local_locality' );
-    $w3p_local_region      = get_option( 'w3p_local_region' );
-    $w3p_local_address     = get_option( 'w3p_local_address' );
-    $w3p_local_postal_code = get_option( 'w3p_local_postal_code' );
-    $w3p_local_country     = get_option( 'w3p_local_country' );
-    $w3p_telephone         = get_option( 'w3p_telephone' );
-
-    $twitter_author_rel = get_option( 'w3p_twitter_author' );
-
-    $name = get_bloginfo( 'name' );
-    $url  = get_bloginfo( 'url' );
+    $w3p_local = get_option( 'w3p_local' );
 
     if ( (int) $w3p_local === 1 ) {
+        $w3p_local_locality    = get_option( 'w3p_local_locality' );
+        $w3p_local_region      = get_option( 'w3p_local_region' );
+        $w3p_local_address     = get_option( 'w3p_local_address' );
+        $w3p_local_postal_code = get_option( 'w3p_local_postal_code' );
+        $w3p_local_country     = get_option( 'w3p_local_country' );
+        $w3p_local_country_code = get_option( 'w3p_local_country_code' );
+        $w3p_telephone         = get_option( 'w3p_telephone' );
+
+        $twitter_author_rel = get_option( 'w3p_twitter_author' );
+
+        $name = get_bloginfo( 'name' );
+        $url  = get_bloginfo( 'url' );
+
         // Create Organization schema
         $organization_schema = [
             '@context'    => 'https://schema.org',
@@ -75,7 +69,7 @@ function w3p_search_console_footer() {
                 'addressLocality' => esc_html( $w3p_local_locality ),
                 'addressRegion'   => esc_html( $w3p_local_region ),
                 'postalCode'      => esc_html( $w3p_local_postal_code ),
-                'addressCountry'  => esc_html( $w3p_local_country ),
+                'addressCountry'  => $w3p_local_country_code ? strtoupper( $w3p_local_country_code ) : esc_html( $w3p_local_country ),
             ],
             'telephone'   => esc_html( $w3p_telephone ),
         ];
@@ -96,7 +90,7 @@ function w3p_search_console_footer() {
                 'addressLocality' => esc_html( $w3p_local_locality ),
                 'addressRegion'   => esc_html( $w3p_local_region ),
                 'postalCode'      => esc_html( $w3p_local_postal_code ),
-                'addressCountry'  => esc_html( $w3p_local_country ),
+                'addressCountry'  => $w3p_local_country_code ? strtoupper( $w3p_local_country_code ) : esc_html( $w3p_local_country ),
             ],
             'telephone'  => esc_html( $w3p_telephone ),
             'priceRange' => '$$',
@@ -105,21 +99,24 @@ function w3p_search_console_footer() {
             ],
         ];
 
+        // Add Country schema if code is set
+        if ( $w3p_local_country_code ) {
+            $country_schema = [
+                '@context' => 'https://schema.org',
+                '@type'    => 'Country',
+                'name'     => esc_html( $w3p_local_country ),
+                'identifier' => strtoupper( $w3p_local_country_code ),
+            ];
+            $out .= '<script type="application/ld+json">' . wp_json_encode( $country_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>';
+        }
+
         // Output the JSON-LD Organization and LocalBusiness
         $out .= '<!-- W3P Local -->';
         $out .= '<script type="application/ld+json">' . wp_json_encode( $organization_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>';
         $out .= '<script type="application/ld+json">' . wp_json_encode( $local_business_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>';
     }
 
-    $allowed_html = [
-        'script' => [
-            'type' => [], // Allow script tags with any type attribute
-        ],
-        '!--'    => [], // Allow comments
-    ];
-
-    // Use wp_kses() to escape $out
-    echo wp_kses( $out, $allowed_html );
+    echo $out;
 }
 
 
@@ -193,13 +190,23 @@ function w3p_head_og() {
     <meta property="og:url" content="' . $permalink . '">
     <meta property="og:site_name" content="' . esc_html( get_bloginfo( 'name' ) ) . '">
     <meta property="og:title" content="' . $title . '">
-    <meta property="og:description" content="' . esc_attr( $w3p_excerpt ) . '">
+    <meta property="og:description" content="' . esc_attr( $w3p_excerpt ) . '">';
 
-    <meta property="article:published_time" content="' . esc_attr( get_the_date( 'c' ) ) . '">
-    <meta property="article:modified_time" content="' . esc_attr( get_the_modified_date( 'c' ) ) . '">
-    <meta property="article:author" content="' . esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . '">
+    // Add logo if available
+    $w3p_kg_logo = get_option( 'w3p_kg_logo' );
+    if ( $w3p_kg_logo ) {
+        $out .= '<meta property="og:logo" content="' . esc_url( $w3p_kg_logo ) . '">';
+    }
 
-    <meta name="pinterest-rich-pin" content="true">
+    $out .= '<meta property="article:published_time" content="' . esc_attr( get_the_date( 'c' ) ) . '">
+    <meta property="article:modified_time" content="' . esc_attr( get_the_modified_date( 'c' ) ) . '">';
+
+    // Only output author on singular content to avoid empty /author/ on homepage or archives
+    if ( is_singular() && ! is_front_page() ) {
+        $out .= '<meta property="article:author" content="' . esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . '">';
+    }
+
+    $out .= '<meta name="pinterest-rich-pin" content="true">
 
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:domain" content="' . $domain_url . '">
@@ -212,19 +219,24 @@ function w3p_head_og() {
 
     // Facebook
     if ( ! has_post_thumbnail( $post->ID ) ) {
-        if ( ! empty( get_option( 'w3p_fb_default_image' ) ) ) {
-            $out .= '<meta property="og:image" content="' . esc_url( get_option( 'w3p_fb_default_image' ) ) . '">';
+        $fb_default_image = get_option( 'w3p_fb_default_image' );
+        if ( ! empty( $fb_default_image ) ) {
+            $out .= '<meta property="og:image" content="' . esc_url( $fb_default_image ) . '">';
         }
     } else {
-        $thumbnail_src = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' );
-        $thumbnail_alt = esc_attr( get_post_meta( get_post_thumbnail_id( $post->ID ), '_wp_attachment_image_alt', true ) );
-
-        if ( $thumbnail_src ) {
-            $out .= '<meta property="og:image" content="' . esc_url( $thumbnail_src[0] ) . '">
-            <meta property="og:image:width" content="' . esc_attr( $thumbnail_src[1] ) . '">
-            <meta property="og:image:height" content="' . esc_attr( $thumbnail_src[2] ) . '">
-            <meta property="og:image:alt" content="' . $thumbnail_alt . '">
-            <meta property="twitter:image" content="' . esc_url( $thumbnail_src[0] ) . '">';
+        // Get thumbnail ID once and reuse it
+        $thumbnail_id = get_post_thumbnail_id( $post->ID );
+        if ( $thumbnail_id ) {
+            $thumbnail_src = wp_get_attachment_image_src( $thumbnail_id, 'full' );
+            if ( $thumbnail_src ) {
+                // Get alt text using the same thumbnail ID (avoid duplicate query)
+                $thumbnail_alt = esc_attr( get_post_meta( $thumbnail_id, '_wp_attachment_image_alt', true ) );
+                $out .= '<meta property="og:image" content="' . esc_url( $thumbnail_src[0] ) . '">
+                <meta property="og:image:width" content="' . esc_attr( $thumbnail_src[1] ) . '">
+                <meta property="og:image:height" content="' . esc_attr( $thumbnail_src[2] ) . '">
+                <meta property="og:image:alt" content="' . $thumbnail_alt . '">
+                <meta property="twitter:image" content="' . esc_url( $thumbnail_src[0] ) . '">';
+            }
         }
     }
 
@@ -342,7 +354,7 @@ function w3p_breadcrumbs() {
 
             // Check if the post is in a category
             if ( ! empty( $last_category ) ) {
-                echo wp_kses_data( $cat_display );
+                echo $cat_display;
                 echo wp_kses_data( w3p_breadcrumb_wrapper( get_the_title(), '#', 'item-current item-' . $post->ID . '', $counter ) );
                 ++$counter;
 
@@ -381,7 +393,7 @@ function w3p_breadcrumbs() {
                 }
 
                 // Display parent pages
-                echo wp_kses_data( $parents );
+                echo $parents;
 
                 // Current page
                 echo wp_kses_data( w3p_breadcrumb_wrapper( get_the_title(), '#', 'item-current item-' . $post->ID . '', $counter ) );

@@ -4,8 +4,8 @@ Tags: seo, sitemap, local, google, webmaster
 Requires at least: 4.9
 Requires PHP: 7.1
 Requires CP: 2.0
-Tested up to: 6.7.1
-Stable tag: 1.8.2
+Tested up to: 6.9.1
+Stable tag: 2.1.3
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -25,14 +25,120 @@ Upload and activate the plugin.
 
 == Changelog ==
 
+= 2.1.3 =
+* SYNC: Plugin is now synchronized with its WordPress counterpart (W3P SEO)
+* UPDATE: Replace Inter fonts with Raveo variable font
+* UPDATE: Remove Link Whisper feature
+* UPDATE: Remove Yandex and Baidu verification support
+* UPDATE: Add SEO plugin cleanup tools (AIOSEO and Yoast)
+* UPDATE: Add per-post noindex/nofollow option
+* UPDATE: Add country code field for local business schema
+* PERFORMANCE: Add transient caching for logo dimensions and attachment IDs
+* PERFORMANCE: Optimize sitemap filters, canonical links, and excerpt generation
+* FIX: Use native wp_robots filter for robots meta handling
+
+= 2.1.2 =
+* FIX: Change excerpt generation from 55 words to 155 characters for proper SEO meta description length
+* FIX: Add sanitization and removal of non-breaking spaces (&nbsp;) from meta descriptions
+
+= 2.1.1 =
+* PERFORMANCE: Optimize w3p_get_excerpt() to avoid get_the_excerpt() overhead by using direct post field access
+* PERFORMANCE: Fix duplicate get_post_thumbnail_id() calls in w3p_head_og()
+* PERFORMANCE: Add transient caching for expensive attachment_url_to_postid() query (reduces query time from 0.0065s to 0s on cached requests)
+* PERFORMANCE: Replace object cache with transients for better compatibility across all WordPress installations
+
+= 2.1.0 =
+* PERFORMANCE: Optimize sitemap post type and taxonomy filters with static caching
+* PERFORMANCE: Optimize canonical link generation with request-scoped caching
+* PERFORMANCE: Optimize w3p_search_console_footer with early exit when local business is disabled
+* PERFORMANCE: Optimize logo dimensions retrieval to use database instead of file system operations
+* PERFORMANCE: Fix duplicate get_option() calls in sitemap max URLs filter
+* UPDATE: Remove Yandex and Baidu verification support
+* UPDATE: Remove Link Whisper feature and associated code
+* UPDATE: Simplify SEO meta character counters (remove color coding and thresholds)
+
+= 2.0.6 =
+* Fix sitemap lastmod date format to use W3C datetime format (fixes Google Search Console invalid date errors)
+* Fix undefined array key warning in subpages shortcode
+
+= 2.0.5 =
+* Update sitemap to use the W3C datetime format
+
+= 2.0.4 =
+* Add SEO plugin cleanup tools
+
+= 2.0.3 =
+* Fix hardcoded product category slug in breadcrumbs
+* Add WooCommerce noindex for various product actions (add-to-cart, etc.)
+
+= 2.0.2 =
+* Fix canonical links for categories
+
+= 2.0.1 =
+* Fix sitemap not excluding pages that are noindexed by other plugins
+* Merge the Dashboard and the Settings tabs
+* Update screenshots
+
+= 2.0.0 =
+* Fix the way the Knowledge Panel gets the image dimensions (width and height) to avoid extra database queries
+* Fix empty Open Graph author tag on homepage
+* Fix Knowledge Panel wording
+
+= 1.9.3 =
+* Add missing Open Graph logo tag
+* Update screenshots
+* Update WordPress compatibility
+
+= 1.9.2 =
+* Fix settings UI
+* Add robots exclusion for posts
+* Add a default value for number of sitemap links
+
+= 1.9.1 =
+* Fix taxonomy description not being displayed
+* Add new country code field for correct local Schema
+* Improve title and description meters and length checkers
+* Update WordPress compatibility
+
+= 1.9.0 =
+* FIX: Fix breadcrumbs missing the `position` property
+* FIX: Fix robots meta tag being added to the `<head>` element regardless of the sitemap setting
+* UPDATE: Update official plugin URL
+* Update WordPress compatibility
+
+= 1.8.9 =
+* Update WordPress compatibility
+
+= 1.8.8 =
+* Update WordPress compatibility
+* Update breadcrumbs JSON-LD to match the new Google guidelines
+
+= 1.8.7 =
+* Sanitize and unslash options
+* Update WordPress compatibility
+
+= 1.8.6 =
+* UPDATE: Remove obsolete header/footer content
+* UPDATE: Remove obsolete Google Analytics and Google Tag Manager
+
+= 1.8.5 =
+* FIX: Fix wrongly escaped string
+
+= 1.8.4 =
+* FIX: Fix Cross Site Request Forgery (CSRF) vulnerability
+
+= 1.8.3 =
+* UPDATE: Remove old, obsolete options
+
 = 1.8.2 =
-* Add the proper "WRP SEO" plugin name in a few places
-* Remove several WordPress references
-* Remove obsolete Web of Trust references
+* FIX: Fix breadcrumbs not correctly displaying the parent permalink
 
 = 1.8.1 =
-* FIX: Pass all CPCS guidelines
-* UPDATE: Remove lots of obsolete features
+* FIX: Fix Link Whisper to match the word but avoid existing links and HTML attributes
+* FIX: Optimize the custom title and meta description length checker
+* FEATURE: Add Rank Math migrator
+* UPDATE: Add better sanitization for custom titles and meta descriptions
+* UPDATE: Remove all Inter fonts
 
 = 1.8.0 =
 * FIX: Fix Link Whisper feature to use word boundaries, excluding words already inside `<a>` tags
@@ -132,7 +238,7 @@ Upload and activate the plugin.
 
 = 1.5.0 =
 * FIX: Removed unused Facebook administrator ID option
-* FEATURE: Added Knowledge Graph Schema details
+* FEATURE: Added Knowledge Panel Schema details
 * FEATURE: Added custom title
 * FEATURE: Added excerpt as custom meta description
 

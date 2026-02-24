@@ -6,17 +6,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 function w3p_subpages( $atts ) {
     global $post;
 
+    $default_parent_id = 0;
+    if ( isset( $post ) && isset( $post->ID ) ) {
+        $default_parent_id = $post->ID;
+    }
+
     $attributes = shortcode_atts(
         [
-            'orderby' => 'menu_order',
+            'orderby'   => 'menu_order',
+            'parent-id' => $default_parent_id,
         ],
         $atts
     );
 
+    $parent_id = isset( $attributes['parent_id'] ) ? (int) $attributes['parent_id'] : $default_parent_id;
+
     $args = [
         'post_type'      => 'page',
         'posts_per_page' => -1,
-        'post_parent'    => $post->ID,
+        'post_parent'    => $parent_id,
         'post_status'    => 'publish',
         'orderby'        => $attributes['orderby'],
     ];
