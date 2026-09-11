@@ -1,11 +1,12 @@
 === W3P SEO ===
 Contributors: butterflymedia
+Donate link: https://buymeacoffee.com/wolffe
 Tags: seo, sitemap, local, google, webmaster
 Requires at least: 4.9
 Requires PHP: 7.1
 Requires CP: 2.0
-Tested up to: 6.9.1
-Stable tag: 2.1.3
+Tested up to: 2.7.2
+Stable tag: 2.1.4
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -17,6 +18,8 @@ W3P SEO has options for search engines, such as ownership verification, local bu
 
 W3P SEO also features native XML sitemaps and advanced topic clustering settings.
 
+Find more tools at [ClassicPress Plugins](https://getbutterfly.com/classicpress-plugins/).
+
 For support, feature requests and bug reporting, please visit the [official website](https://getbutterfly.com/wordpress-plugins/w3p-seo/ "getButterfly - W3P SEO").
 
 == Installation ==
@@ -24,6 +27,11 @@ For support, feature requests and bug reporting, please visit the [official webs
 Upload and activate the plugin.
 
 == Changelog ==
+
+= 2.1.4 =
+* Confirm compatibility with ClassicPress 2.7.2.
+* Add links to ClassicPress Plugins and the donation page.
+* Standardize the installable plugin ZIP included with each GitHub release.
 
 = 2.1.3 =
 * SYNC: Plugin is now synchronized with its WordPress counterpart (W3P SEO)
