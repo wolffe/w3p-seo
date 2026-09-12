@@ -34,7 +34,8 @@ function w3p_search_console_head() {
 
 
 function w3p_search_console_footer() {
-    $out = '';
+    $out          = '';
+    $json_options = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;
 
     $w3p_local = get_option( 'w3p_local' );
 
@@ -107,16 +108,15 @@ function w3p_search_console_footer() {
                 'name'     => esc_html( $w3p_local_country ),
                 'identifier' => strtoupper( $w3p_local_country_code ),
             ];
-            $out .= '<script type="application/ld+json">' . wp_json_encode( $country_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>';
+            $out .= '<script type="application/ld+json">' . wp_json_encode( $country_schema, $json_options ) . '</script>';
         }
 
         // Output the JSON-LD Organization and LocalBusiness
-        $out .= '<!-- W3P Local -->';
-        $out .= '<script type="application/ld+json">' . wp_json_encode( $organization_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>';
-        $out .= '<script type="application/ld+json">' . wp_json_encode( $local_business_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>';
+        $out .= '<script type="application/ld+json">' . wp_json_encode( $organization_schema, $json_options ) . '</script>';
+        $out .= '<script type="application/ld+json">' . wp_json_encode( $local_business_schema, $json_options ) . '</script>';
     }
 
-    echo $out;
+    echo wp_kses( $out, [ 'script' => [ 'type' => true ] ] );
 }
 
 
@@ -354,7 +354,7 @@ function w3p_breadcrumbs() {
 
             // Check if the post is in a category
             if ( ! empty( $last_category ) ) {
-                echo $cat_display;
+                echo wp_kses_data( $cat_display );
                 echo wp_kses_data( w3p_breadcrumb_wrapper( get_the_title(), '#', 'item-current item-' . $post->ID . '', $counter ) );
                 ++$counter;
 
@@ -393,7 +393,7 @@ function w3p_breadcrumbs() {
                 }
 
                 // Display parent pages
-                echo $parents;
+                echo wp_kses_data( $parents );
 
                 // Current page
                 echo wp_kses_data( w3p_breadcrumb_wrapper( get_the_title(), '#', 'item-current item-' . $post->ID . '', $counter ) );

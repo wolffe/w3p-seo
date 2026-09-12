@@ -27,20 +27,15 @@ function w3p_schema_breadcrumbs() {
             'itemListElement' => [],
         ];
 
-        global $post;
+        $current_post = get_post();
 
-        // Ensure $post is valid
-        if ( is_int( $post ) ) {
-            $post = get_post( $post );
-        }
-
-        if ( ! ( $post instanceof WP_Post ) ) {
-            return; // Bail if $post is still invalid.
+        if ( ! ( $current_post instanceof WP_Post ) ) {
+            return;
         }
 
         // Use post object properties directly to avoid queries
-        $post_permalink = get_permalink( $post->ID );
-        $post_title     = $post->post_title;
+        $post_permalink = get_permalink( $current_post->ID );
+        $post_title     = $current_post->post_title;
 
         // Single Post
         if ( is_singular( 'post' ) ) {
@@ -62,7 +57,7 @@ function w3p_schema_breadcrumbs() {
             ];
         } elseif ( is_singular( 'product' ) ) {
             // Single Product
-            $terms = wp_get_object_terms( $post->ID, 'product_cat', [ 'number' => 1 ] );
+            $terms = wp_get_object_terms( $current_post->ID, 'product_cat', [ 'number' => 1 ] );
             if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
                 $term = $terms[0];
                 $term_link = get_term_link( $term );
@@ -86,8 +81,8 @@ function w3p_schema_breadcrumbs() {
             }
         } elseif ( is_page() && ! is_front_page() ) {
             // Pages (Including Parent-Child Hierarchy)
-            if ( $post->post_parent ) {
-                $parent_post = get_post( $post->post_parent );
+            if ( $current_post->post_parent ) {
+                $parent_post = get_post( $current_post->post_parent );
                 if ( $parent_post ) {
                     $parent_page_url   = get_permalink( $parent_post->ID );
                     $parent_page_title = $parent_post->post_title;
@@ -105,7 +100,7 @@ function w3p_schema_breadcrumbs() {
 
             $breadcrumbs['itemListElement'][] = [
                 '@type'    => 'ListItem',
-                'position' => $post->post_parent ? 2 : 1,
+                'position' => $current_post->post_parent ? 2 : 1,
                 'item'     => [
                     '@id'  => esc_url( $post_permalink ),
                     'name' => esc_html( $post_title ),

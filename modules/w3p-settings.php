@@ -3,6 +3,34 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+function w3p_get_post_text( $key, $default = '' ) {
+    if ( ! isset( $_POST[ $key ] ) || ! is_scalar( $_POST[ $key ] ) ) {
+        return $default;
+    }
+
+    return sanitize_text_field( wp_unslash( $_POST[ $key ] ) );
+}
+
+function w3p_get_post_textarea( $key, $default = '' ) {
+    if ( ! isset( $_POST[ $key ] ) || ! is_scalar( $_POST[ $key ] ) ) {
+        return $default;
+    }
+
+    return sanitize_textarea_field( wp_unslash( $_POST[ $key ] ) );
+}
+
+function w3p_get_post_url( $key, $default = '' ) {
+    if ( ! isset( $_POST[ $key ] ) || ! is_scalar( $_POST[ $key ] ) ) {
+        return $default;
+    }
+
+    return esc_url_raw( wp_unslash( $_POST[ $key ] ) );
+}
+
+function w3p_get_post_checkbox( $key ) {
+    return '1' === w3p_get_post_text( $key ) ? 1 : 0;
+}
+
 function w3p_settings() {
     ?>
     <div class="wrap wrap--w3p">
@@ -24,13 +52,13 @@ function w3p_settings() {
                     wp_die( esc_html__( 'Nonce verification failed. Please try again.', 'w3p-seo' ) );
                 }
 
-                update_option( 'w3p_enable_title_description', (int) sanitize_text_field( $_POST['w3p_enable_title_description'] ) );
-                update_option( 'w3p_enable_sitemap', (int) sanitize_text_field( $_POST['w3p_enable_sitemap'] ) );
-                update_option( 'w3p_enable_yoast_migrator', (int) sanitize_text_field( $_POST['w3p_enable_yoast_migrator'] ) );
-                update_option( 'w3p_enable_rankmath_migrator', (int) sanitize_text_field( $_POST['w3p_enable_rankmath_migrator'] ) );
+                update_option( 'w3p_enable_title_description', w3p_get_post_checkbox( 'w3p_enable_title_description' ) );
+                update_option( 'w3p_enable_sitemap', w3p_get_post_checkbox( 'w3p_enable_sitemap' ) );
+                update_option( 'w3p_enable_yoast_migrator', w3p_get_post_checkbox( 'w3p_enable_yoast_migrator' ) );
+                update_option( 'w3p_enable_rankmath_migrator', w3p_get_post_checkbox( 'w3p_enable_rankmath_migrator' ) );
 
-                update_option( 'w3p_schema_breadcrumbs', (int) sanitize_text_field( $_POST['w3p_schema_breadcrumbs'] ) );
-                update_option( 'w3p_image_alt', (int) sanitize_text_field( $_POST['w3p_image_alt'] ) );
+                update_option( 'w3p_schema_breadcrumbs', w3p_get_post_checkbox( 'w3p_schema_breadcrumbs' ) );
+                update_option( 'w3p_image_alt', w3p_get_post_checkbox( 'w3p_image_alt' ) );
 
                 delete_option( 'w3p_image_license_url' );
                 delete_option( 'w3p_image_acquire_license_url' );
@@ -144,7 +172,7 @@ function w3p_settings() {
             <p>&copy;<?php echo esc_attr( wp_date( 'Y' ) ); ?> <a href="https://getbutterfly.com/" rel="external"><strong>getButterfly</strong>.com</a> &middot; <small>Code wrangling since 2005</small></p>
             <?php
         } elseif ( $tab === 'console' ) {
-            $sub_tab = isset( $_GET['tab2'] ) ? (string) sanitize_text_field( $_GET['tab2'] ) : 'verification';
+            $sub_tab = isset( $_GET['tab2'] ) ? (string) sanitize_text_field( wp_unslash( $_GET['tab2'] ) ) : 'verification';
             ?>
             <h2>Search Engine Console Settings</h2>
 
@@ -168,14 +196,14 @@ function w3p_settings() {
                         wp_die( esc_html__( 'Nonce verification failed. Please try again.', 'w3p-seo' ) );
                     }
 
-                    update_option( 'w3p_google_webmaster', sanitize_text_field( $_POST['w3p_google_webmaster'] ) );
-                    update_option( 'w3p_bing_webmaster', sanitize_text_field( $_POST['w3p_bing_webmaster'] ) );
-                    update_option( 'w3p_pinterest_webmaster', sanitize_text_field( $_POST['w3p_pinterest_webmaster'] ) );
+                    update_option( 'w3p_google_webmaster', w3p_get_post_text( 'w3p_google_webmaster' ) );
+                    update_option( 'w3p_bing_webmaster', w3p_get_post_text( 'w3p_bing_webmaster' ) );
+                    update_option( 'w3p_pinterest_webmaster', w3p_get_post_text( 'w3p_pinterest_webmaster' ) );
 
                     delete_option( 'w3p_yandex_webmaster' );
                     delete_option( 'w3p_baidu_webmaster' );
 
-                    update_option( 'w3p_twitter_author', sanitize_text_field( $_POST['w3p_twitter_author'] ) );
+                    update_option( 'w3p_twitter_author', w3p_get_post_text( 'w3p_twitter_author' ) );
 
                     delete_option( 'w3p_wot_webmaster' );
                     delete_option( 'w3p_majestic_webmaster' );
@@ -220,18 +248,18 @@ function w3p_settings() {
                         wp_die( esc_html__( 'Nonce verification failed. Please try again.', 'w3p-seo' ) );
                     }
 
-                    update_option( 'w3p_local', (int) sanitize_text_field( $_POST['w3p_local'] ) );
+                    update_option( 'w3p_local', w3p_get_post_checkbox( 'w3p_local' ) );
 
-                    update_option( 'w3p_local_locality', sanitize_text_field( $_POST['w3p_local_locality'] ) );
-                    update_option( 'w3p_local_region', sanitize_text_field( $_POST['w3p_local_region'] ) );
-                    update_option( 'w3p_local_address', sanitize_text_field( $_POST['w3p_local_address'] ) );
-                    update_option( 'w3p_local_postal_code', sanitize_text_field( $_POST['w3p_local_postal_code'] ) );
-                    update_option( 'w3p_local_country', sanitize_text_field( $_POST['w3p_local_country'] ) );
-                    update_option( 'w3p_local_country_code', sanitize_text_field( $_POST['w3p_local_country_code'] ) );
-                    update_option( 'w3p_telephone', sanitize_text_field( $_POST['w3p_telephone'] ) );
+                    update_option( 'w3p_local_locality', w3p_get_post_text( 'w3p_local_locality' ) );
+                    update_option( 'w3p_local_region', w3p_get_post_text( 'w3p_local_region' ) );
+                    update_option( 'w3p_local_address', w3p_get_post_text( 'w3p_local_address' ) );
+                    update_option( 'w3p_local_postal_code', w3p_get_post_text( 'w3p_local_postal_code' ) );
+                    update_option( 'w3p_local_country', w3p_get_post_text( 'w3p_local_country' ) );
+                    update_option( 'w3p_local_country_code', w3p_get_post_text( 'w3p_local_country_code' ) );
+                    update_option( 'w3p_telephone', w3p_get_post_text( 'w3p_telephone' ) );
 
-                    update_option( 'w3p_local_image_1', sanitize_url( $_POST['w3p_local_image_1'] ) );
-                    update_option( 'w3p_local_image_2', sanitize_url( $_POST['w3p_local_image_2'] ) );
+                    update_option( 'w3p_local_image_1', w3p_get_post_url( 'w3p_local_image_1' ) );
+                    update_option( 'w3p_local_image_2', w3p_get_post_url( 'w3p_local_image_2' ) );
 
                     echo '<div class="updated notice is-dismissible"><p>Settings updated!</p></div>';
                 }
@@ -329,9 +357,6 @@ function w3p_settings() {
                                             echo '<p>No image selected.</p>';
                                         }
 
-                                        if ( ! empty( $_POST['image_1'] ) ) {
-                                            $image_url = $_POST['image_1'];
-                                        }
                                         ?>
                                         <input id="w3p-image-url-1" type="hidden" name="w3p_local_image_1" value="<?php echo esc_url( get_option( 'w3p_local_image_1' ) ); ?>">
                                         <input id="w3p-upload-image-btn-1" type="button" class="button button-secondary" value="Upload or Select Image">
@@ -350,9 +375,6 @@ function w3p_settings() {
                                             echo '<p>No image selected.</p>';
                                         }
 
-                                        if ( ! empty( $_POST['image_2'] ) ) {
-                                            $image_url = $_POST['image_2'];
-                                        }
                                         ?>
                                         <input id="w3p-image-url-2" type="hidden" name="w3p_local_image_2" value="<?php echo esc_url( get_option( 'w3p_local_image_2' ) ); ?>">
                                         <input id="w3p-upload-image-btn-2" type="button" class="button button-secondary" value="Upload or Select Image">
@@ -431,11 +453,12 @@ function w3p_settings() {
                         wp_die( esc_html__( 'Nonce verification failed. Please try again.', 'w3p-seo' ) );
                     }
 
-                    update_option( 'w3p_kg_type', sanitize_text_field( $_POST['w3p_kg_type'] ) );
-                    update_option( 'w3p_kg_name', sanitize_text_field( $_POST['w3p_kg_name'] ) );
+                    $w3p_kg_type = w3p_get_post_text( 'w3p_kg_type' );
+                    update_option( 'w3p_kg_type', in_array( $w3p_kg_type, [ 'organization', 'person' ], true ) ? $w3p_kg_type : 'organization' );
+                    update_option( 'w3p_kg_name', w3p_get_post_text( 'w3p_kg_name' ) );
                     
                     $old_logo = get_option( 'w3p_kg_logo' );
-                    $new_logo = sanitize_url( $_POST['w3p_kg_logo'] );
+                    $new_logo = w3p_get_post_url( 'w3p_kg_logo' );
                     update_option( 'w3p_kg_logo', $new_logo );
                     
                     // Clear transients if logo changed
@@ -450,7 +473,7 @@ function w3p_settings() {
                         }
                     }
 
-                    $w3p_kg_same_as = isset( $_POST['w3p_kg_same_as'] ) ? sanitize_textarea_field( $_POST['w3p_kg_same_as'] ) : '';
+                    $w3p_kg_same_as = w3p_get_post_textarea( 'w3p_kg_same_as' );
                     update_option( 'w3p_kg_same_as', $w3p_kg_same_as );
 
                     echo '<div class="updated notice is-dismissible"><p>Settings updated successfully!</p></div>';
@@ -499,10 +522,6 @@ function w3p_settings() {
                                             echo '<p><img src="' . esc_url( $image_url ) . '" style="max-width: 400px;" alt=""></p>';
                                         } else {
                                             echo '<p>No image selected.</p>';
-                                        }
-
-                                        if ( ! empty( $_POST['image'] ) ) {
-                                            $image_url = $_POST['image'];
                                         }
 
                                         wp_enqueue_media();
@@ -572,8 +591,8 @@ function w3p_settings() {
                         wp_die( esc_html__( 'Nonce verification failed. Please try again.', 'w3p-seo' ) );
                     }
 
-                    update_option( 'w3p_og', (int) $_POST['w3p_og'] );
-                    update_option( 'w3p_fb_default_image', esc_url( $_POST['w3p_fb_default_image'] ) );
+                    update_option( 'w3p_og', w3p_get_post_checkbox( 'w3p_og' ) );
+                    update_option( 'w3p_fb_default_image', w3p_get_post_url( 'w3p_fb_default_image' ) );
 
                     delete_option( 'w3p_fb_app_id' );
 
@@ -617,10 +636,6 @@ function w3p_settings() {
                                             echo '<p><img src="' . esc_url( $image_url ) . '" style="max-width: 400px;" alt=""></p>';
                                         } else {
                                             echo '<p>No image selected.</p>';
-                                        }
-
-                                        if ( ! empty( $_POST['image'] ) ) {
-                                            $image_url = $_POST['image'];
                                         }
 
                                         wp_enqueue_media();
@@ -675,7 +690,7 @@ function w3p_settings() {
                         wp_die( esc_html__( 'Nonce verification failed. Please try again.', 'w3p-seo' ) );
                     }
 
-                    update_option( 'w3p_noindex_queries', (int) sanitize_text_field( $_POST['w3p_noindex_queries'] ) );
+                    update_option( 'w3p_noindex_queries', w3p_get_post_checkbox( 'w3p_noindex_queries' ) );
 
                     echo '<div class="updated notice is-dismissible"><p>Settings updated!</p></div>';
                 }
@@ -720,7 +735,7 @@ function w3p_settings() {
                         wp_die( esc_html__( 'Nonce verification failed. Please try again.', 'w3p-seo' ) );
                     }
 
-                    update_option( 'w3p_sitemap_links', (int) $_POST['w3p_sitemap_links'] );
+                    update_option( 'w3p_sitemap_links', absint( w3p_get_post_text( 'w3p_sitemap_links' ) ) );
 
                     if ( $post_types ) {
                         foreach ( $post_types as $type ) {
@@ -768,9 +783,9 @@ function w3p_settings() {
                                             echo '<details open>
                                                 <summary>
                                                     <span class="summary-title">' . esc_html( $type->label ) . ' (<code>' . esc_html( $type->name ) . '</code>)</span>
-	                                            	<div class="summary-chevron-up">
-			                                            <svg xmlns="https://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                                            		</div>
+                                                    <div class="summary-chevron-up">
+                                                        <svg xmlns="https://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                                    </div>
                                                 </summary>
                                                 <div class="summary-content">
                                                     <p>
@@ -807,7 +822,7 @@ function w3p_settings() {
                         wp_die( esc_html__( 'Nonce verification failed. Please try again.', 'w3p-seo' ) );
                     }
 
-                    update_option( 'w3p_enable_sitemap_users', (int) $_POST['w3p_enable_sitemap_users'] );
+                    update_option( 'w3p_enable_sitemap_users', w3p_get_post_checkbox( 'w3p_enable_sitemap_users' ) );
 
                     if ( $taxonomies ) {
                         foreach ( $taxonomies as $taxonomy ) {
@@ -842,9 +857,9 @@ function w3p_settings() {
                                             echo '<details open>
                                                 <summary>
                                                     <span class="summary-title">' . esc_html( $taxonomy->label ) . ' (<code>' . esc_attr( $taxonomy->name ) . '</code>)</span>
-	                                            	<div class="summary-chevron-up">
-			                                            <svg xmlns="https://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                                            		</div>
+                                                    <div class="summary-chevron-up">
+                                                        <svg xmlns="https://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                                    </div>
                                                 </summary>
                                                 <div class="summary-content">
                                                     <p>

@@ -10,7 +10,13 @@
 </div>
 
 <?php
-if ( isset( $_POST['w3p_aioseo_cleanup'] ) && wp_verify_nonce( $_POST['w3p_cleanup_tools_nonce'], 'w3p_cleanup_tools' ) ) {
+if ( isset( $_POST['w3p_aioseo_cleanup'] ) ) {
+    if ( ! current_user_can( 'manage_options' ) ) {
+        wp_die( esc_html__( 'You do not have permission to perform this action.', 'w3p-seo' ) );
+    }
+
+    check_admin_referer( 'w3p_cleanup_tools', 'w3p_cleanup_tools_nonce' );
+
     global $wpdb;
 
     // --- 1. Drop AIOSEO custom tables.
@@ -38,7 +44,7 @@ if ( isset( $_POST['w3p_aioseo_cleanup'] ) && wp_verify_nonce( $_POST['w3p_clean
     ];
 
     foreach ( $tables as $table ) {
-        $wpdb->query( "DROP TABLE IF EXISTS `$table`" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        $wpdb->query( "DROP TABLE IF EXISTS `$table`" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table names come from the hard-coded AIOSEO allowlist above.
     }
 
     // --- 2. Delete AIOSEO options.
@@ -90,17 +96,14 @@ if ( isset( $_POST['w3p_aioseo_cleanup'] ) && wp_verify_nonce( $_POST['w3p_clean
         )
     );
 
-    // --- 8. Optimize AIOSEO tables.
-	$tables = $wpdb->get_col( 'SHOW TABLES' );
-
-	foreach ( $tables as $table ) {
-		$wpdb->query( "OPTIMIZE TABLE `$table`" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-	}
-
     echo '<div class="notice notice-success is-dismissible"><p><strong>✅ AIOSEO data cleanup completed successfully!</strong> All AIOSEO tables, options, and metadata have been removed from your database.</p></div>';
-}
+} elseif ( isset( $_POST['w3p_yoast_cleanup'] ) ) {
+    if ( ! current_user_can( 'manage_options' ) ) {
+        wp_die( esc_html__( 'You do not have permission to perform this action.', 'w3p-seo' ) );
+    }
 
-if ( isset( $_POST['w3p_yoast_cleanup'] ) && wp_verify_nonce( $_POST['w3p_cleanup_tools_nonce'], 'w3p_cleanup_tools' ) ) {
+    check_admin_referer( 'w3p_cleanup_tools', 'w3p_cleanup_tools_nonce' );
+
     global $wpdb;
 
     // --- 1. Drop Yoast SEO custom tables.
@@ -113,7 +116,7 @@ if ( isset( $_POST['w3p_yoast_cleanup'] ) && wp_verify_nonce( $_POST['w3p_cleanu
     ];
 
     foreach ( $tables as $table ) {
-        $wpdb->query( "DROP TABLE IF EXISTS `$table`" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        $wpdb->query( "DROP TABLE IF EXISTS `$table`" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table names come from the hard-coded Yoast allowlist above.
     }
 
     // --- 2. Delete Yoast SEO options.
@@ -164,13 +167,6 @@ if ( isset( $_POST['w3p_yoast_cleanup'] ) && wp_verify_nonce( $_POST['w3p_cleanu
             'wpseo_%'
         )
     );
-
-    // --- 8. Optimize Yoast SEO tables.
-	$tables = $wpdb->get_col( 'SHOW TABLES' );
-
-	foreach ( $tables as $table ) {
-		$wpdb->query( "OPTIMIZE TABLE `$table`" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-	}
 
     echo '<div class="notice notice-success is-dismissible"><p><strong>✅ Yoast SEO data cleanup completed successfully!</strong> All Yoast SEO tables, options, and metadata have been removed from your database.</p></div>';
 }

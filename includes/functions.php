@@ -326,6 +326,7 @@ add_action( 'wp_head', 'w3p_wp_head', 1 );
  */
 function w3p_add_canonical_link() {
     $canonical_url = '';
+    $request_uri   = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
 
     if ( is_front_page() ) {
         $canonical_url = home_url( '/' );
@@ -335,7 +336,6 @@ function w3p_add_canonical_link() {
         $term = get_queried_object();
         if ( $term && ! is_wp_error( $term ) ) {
             if ( is_category() ) {
-                $request_uri   = isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '';
                 $current_url   = home_url( $request_uri );
                 $canonical_url = strtok( $current_url, '?' );
             } else {
@@ -343,7 +343,6 @@ function w3p_add_canonical_link() {
             }
 
             if ( is_wp_error( $canonical_url ) ) {
-                $request_uri   = isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '';
                 $current_url   = home_url( $request_uri );
                 $canonical_url = strtok( $current_url, '?' );
             }
