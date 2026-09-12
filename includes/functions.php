@@ -142,10 +142,10 @@ function w3p_remove_users_from_sitemap( $provider, $name ) {
 
 function w3p_exclude_noindex_from_sitemap( $args, $post_type ) {
     if ( ! isset( $args['meta_query'] ) ) {
+        // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Required to exclude noindex content from the sitemap query.
         $args['meta_query'] = [];
     }
 
-    // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Required to exclude noindex content from the sitemap query.
     $args['meta_query'][] = [
         'relation' => 'OR',
         [
@@ -743,6 +743,7 @@ function w3p_filter_wp_robots( $robots ) {
     }
 
     // WooCommerce noindex. This inspects query keys only and does not mutate state.
+    // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Query keys determine robots metadata only; no request data is stored or acted on.
     if ( function_exists( 'WC' ) && ! empty( $_GET ) ) {
         $blocked_params = [
             'add-to-cart',
@@ -751,7 +752,6 @@ function w3p_filter_wp_robots( $robots ) {
             'wc-ajax',
         ];
 
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Query keys determine robots metadata only; no request data is stored or acted on.
         $get_keys = array_keys( $_GET );
 
         foreach ( $blocked_params as $param ) {
