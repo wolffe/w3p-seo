@@ -743,7 +743,6 @@ function w3p_filter_wp_robots( $robots ) {
     }
 
     // WooCommerce noindex. This inspects query keys only and does not mutate state.
-    // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Query keys determine robots metadata only; no request data is stored or acted on.
     if ( function_exists( 'WC' ) && ! empty( $_GET ) ) {
         $blocked_params = [
             'add-to-cart',
@@ -752,6 +751,7 @@ function w3p_filter_wp_robots( $robots ) {
             'wc-ajax',
         ];
 
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Query keys determine robots metadata only; no request data is stored or acted on.
         $get_keys = array_keys( $_GET );
 
         foreach ( $blocked_params as $param ) {
