@@ -6,7 +6,7 @@
  * Author: Ciprian Popescu
  * Author URI: https://getbutterfly.com/
  * Version: 2.1.4
- * Requires PHP: 7.0
+ * Requires PHP: 7.4
  * Requires CP: 2.0
  * Text Domain: w3p-seo
  *
