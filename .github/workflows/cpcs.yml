@@ -30,6 +30,9 @@ jobs:
                     ' phpcs.xml
                   sed -i '/MY_DOMAIN/ s//w3p-seo/' phpcs.xml
                   sed -i '/check_translator_comments/d; /use_default_whitelist/d' phpcs.xml
+                  sed -i '/^\t<!-- start config -->.*/a\
+                    <rule ref="Universal.Arrays.DisallowShortArraySyntax.Found"><severity>0</severity></rule>
+                    ' phpcs.xml
             - name: CPCS checks
               run: phpcs --standard=phpcs.xml --report-json=./phpcs.json
             - name: Update summary
