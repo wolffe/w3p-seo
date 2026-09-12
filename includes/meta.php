@@ -1,15 +1,13 @@
 <?php
 /**
- * Add meta box
- *
- * @param post $post The post object
+ * Add meta box.
  */
-function w3p_add_meta_boxes( $post ) {
+function w3p_add_meta_boxes() {
     add_meta_box( 'w3p_meta_box', __( 'W3P SEO Settings', 'w3p-seo' ), 'w3p_build_meta_box', [ 'post', 'page', 'faq' ], 'normal', 'high' );
 }
 
 if ( (int) get_option( 'w3p_enable_title_description' ) === 1 ) {
-    add_action( 'add_meta_boxes', 'w3p_add_meta_boxes' );
+    add_action( 'add_meta_boxes', 'w3p_add_meta_boxes', 10, 0 );
 }
 
 

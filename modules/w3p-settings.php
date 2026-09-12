@@ -3,25 +3,26 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-function w3p_get_post_text( $key, $default = '' ) {
+// phpcs:disable WordPress.Security.NonceVerification.Missing -- Each helper is called only after its settings form's nonce has been verified.
+function w3p_get_post_text( $key, $fallback = '' ) {
     if ( ! isset( $_POST[ $key ] ) || ! is_scalar( $_POST[ $key ] ) ) {
-        return $default;
+        return $fallback;
     }
 
     return sanitize_text_field( wp_unslash( $_POST[ $key ] ) );
 }
 
-function w3p_get_post_textarea( $key, $default = '' ) {
+function w3p_get_post_textarea( $key, $fallback = '' ) {
     if ( ! isset( $_POST[ $key ] ) || ! is_scalar( $_POST[ $key ] ) ) {
-        return $default;
+        return $fallback;
     }
 
     return sanitize_textarea_field( wp_unslash( $_POST[ $key ] ) );
 }
 
-function w3p_get_post_url( $key, $default = '' ) {
+function w3p_get_post_url( $key, $fallback = '' ) {
     if ( ! isset( $_POST[ $key ] ) || ! is_scalar( $_POST[ $key ] ) ) {
-        return $default;
+        return $fallback;
     }
 
     return esc_url_raw( wp_unslash( $_POST[ $key ] ) );
@@ -30,6 +31,7 @@ function w3p_get_post_url( $key, $default = '' ) {
 function w3p_get_post_checkbox( $key ) {
     return '1' === w3p_get_post_text( $key ) ? 1 : 0;
 }
+// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 function w3p_settings() {
     ?>

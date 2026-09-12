@@ -264,11 +264,11 @@ add_action( 'wp_footer', 'w3p_search_console_footer' );
  *
  * #reference https://developers.google.com/search/docs/data-types/breadcrumbs
  */
-function w3p_breadcrumb_wrapper( $title, $link, $class, $counter ) {
+function w3p_breadcrumb_wrapper( $title, $link, $classes, $counter ) {
     if ( $link !== '#' ) {
-        $item = '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="' . $class . '"><a itemscope itemtype="https://schema.org/Thing" itemprop="item" href="' . $link . '"><span itemprop="name">' . $title . '</span></a><meta itemprop="position" content="' . $counter . '"></li>';
+        $item = '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="' . $classes . '"><a itemscope itemtype="https://schema.org/Thing" itemprop="item" href="' . $link . '"><span itemprop="name">' . $title . '</span></a><meta itemprop="position" content="' . $counter . '"></li>';
     } else {
-        $item = '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="' . $class . '"><span itemprop="name">' . $title . '</span><meta itemprop="position" content="' . $counter . '"></li>';
+        $item = '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="' . $classes . '"><span itemprop="name">' . $title . '</span><meta itemprop="position" content="' . $counter . '"></li>';
     }
 
     return $item;
