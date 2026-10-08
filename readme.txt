@@ -3,10 +3,10 @@ Contributors: butterflymedia
 Donate link: https://buymeacoffee.com/wolffe
 Tags: seo, sitemap, local, google, webmaster
 Requires at least: 4.9
-Requires PHP: 7.1
-Requires CP: 2.0
-Tested up to: 2.7.2
-Stable tag: 2.1.4
+Requires PHP: 7.4
+Requires CP: 2.5
+Tested up to: 2.7.3
+Stable tag: 2.1.5
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -27,6 +27,11 @@ For support, feature requests and bug reporting, please visit the [official webs
 Upload and activate the plugin.
 
 == Changelog ==
+
+= 2.1.5 =
+* Confirm compatibility with ClassicPress 2.7.3.
+* Remove unused category list helper.
+* Load plugin admin styles and the data table only on the screens that use them.
 
 = 2.1.4 =
 * Confirm compatibility with ClassicPress 2.7.2.
