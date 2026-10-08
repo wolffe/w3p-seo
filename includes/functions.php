@@ -673,20 +673,6 @@ function w3p_breadcrumbs_schema() {
 
 
 
-function w3p_cats() {
-    $out = '';
-
-    foreach ( wp_get_post_categories( get_the_ID() ) as $c ) {
-        $cat  = get_category( $c );
-        $out .= '<li><a href="' . get_category_link( $cat ) . '" title="' . $cat->name . '" class="category">' . $cat->name . '</a></li>';
-    }
-
-    return $out;
-}
-
-
-
-
 function w3p_breadcrumbs_filter( $content ) {
     $custom_content  = w3p_breadcrumbs_schema();
     $custom_content .= $content;
